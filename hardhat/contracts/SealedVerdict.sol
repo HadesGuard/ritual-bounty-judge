@@ -22,7 +22,7 @@ interface IRitualWallet {
 ///      After the submission deadline they reveal (answer, salt); the contract
 ///      verifies the commitment. Only verified reveals are eligible for the
 ///      Ritual LLM batch judging and for winning.
-contract AIJudge is PrecompileConsumer {
+contract SealedVerdict is PrecompileConsumer {
     uint256 public constant MAX_SUBMISSIONS = 10;
     uint256 public constant MAX_ANSWER_LENGTH = 2_000;
     uint256 public constant REVEAL_WINDOW = 1 days;

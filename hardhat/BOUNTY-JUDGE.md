@@ -1,6 +1,6 @@
 # Privacy-Preserving AI Bounty Judge - submission
 
-Commit-reveal upgrade of `AIJudge.sol`. Answers stay hidden until the submission
+Commit-reveal upgrade of `SealedVerdict.sol`. Answers stay hidden until the submission
 deadline passes; only verified reveals are eligible for Ritual LLM batch judging.
 
 ## Deployment (Ritual chain, chainId 1979)
@@ -8,7 +8,7 @@ deadline passes; only verified reveals are eligible for Ritual LLM batch judging
 - Contract: `0x9eA7235d9D9870c53EA41868C84EAD757ee86e3c`
 - Deploy tx: `0x6779c6b51f62b11f1a211d50162951588ed6511d0093e0141fe8b35111b2e570`
 - Deployer: `0xB6F30F2577FC57ec3c46d79438f10EFC85a504a1`
-- Deployed via Hardhat Ignition (`ignition/modules/AIJudge.ts`)
+- Deployed via Hardhat Ignition (`ignition/modules/SealedVerdict.ts`)
 
 ## Lifecycle
 
@@ -67,10 +67,10 @@ the commitment client-side, store the salt in localStorage until reveal).
 ## Test plan (reveal cases)
 
 Automated across three layers, run with `npx hardhat test` (51 passing;
-`AIJudge.sol` at 100% line and statement coverage):
+`SealedVerdict.sol` at 100% line and statement coverage):
 
-- [contracts/AIJudge.t.sol](contracts/AIJudge.t.sol) - 20 core unit tests
-- [contracts/AIJudgeDeep.t.sol](contracts/AIJudgeDeep.t.sol) - 27 deep tests:
+- [contracts/SealedVerdict.t.sol](contracts/SealedVerdict.t.sol) - 20 core unit tests
+- [contracts/SealedVerdictDeep.t.sol](contracts/SealedVerdictDeep.t.sol) - 27 deep tests:
   exact time boundaries (commit at `deadline-1` vs `deadline`, reveal opens at
   `deadline` and closes at `revealDeadline`), size limits (2000 vs 2001 chars,
   11th submission), LLM error path (revert + retry, bounty never stuck),
@@ -78,7 +78,7 @@ Automated across three layers, run with `npx hardhat test` (51 passing;
   exactly once), reward conservation, reclaim guards, cross-bounty commitment
   replay, and 3 fuzz tests (256 runs each: roundtrip for arbitrary
   answer/salt/sender, wrong salt always rejected, other sender never reveals)
-- [test/AIJudge.integration.ts](test/AIJudge.integration.ts) - 4 viem
+- [test/SealedVerdict.integration.ts](test/SealedVerdict.integration.ts) - 4 viem
   integration tests driving the contract exactly as a frontend would
   (client-side commitment hashing, mempool-copy attack, reclaim balance
   assertion, lifecycle events)

@@ -2,15 +2,15 @@
 pragma solidity ^0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {AIJudge} from "./AIJudge.sol";
+import {SealedVerdict} from "./SealedVerdict.sol";
 
 /// Reenters finalizeWinner when receiving the reward payout.
 contract ReentrantWinner {
-    AIJudge judge;
+    SealedVerdict judge;
     uint256 bountyId;
     bool reentered;
 
-    constructor(AIJudge _judge) {
+    constructor(SealedVerdict _judge) {
         judge = _judge;
     }
 
@@ -34,8 +34,8 @@ contract ReentrantWinner {
     }
 }
 
-contract AIJudgeDeepTest is Test {
-    AIJudge judge;
+contract SealedVerdictDeepTest is Test {
+    SealedVerdict judge;
 
     address owner = address(0x1);
     address alice = address(0x2);
@@ -47,7 +47,7 @@ contract AIJudgeDeepTest is Test {
     address constant LLM = address(0x0802);
 
     function setUp() public {
-        judge = new AIJudge();
+        judge = new SealedVerdict();
         deadline = block.timestamp + 1 days;
         vm.deal(owner, 100 ether);
         vm.prank(owner);
@@ -82,7 +82,7 @@ contract AIJudgeDeepTest is Test {
             bytes("review"),
             bytes(""),
             "",
-            AIJudge.ConvoHistory("", "", "")
+            SealedVerdict.ConvoHistory("", "", "")
         );
         vm.mockCall(LLM, llmInput, abi.encode(bytes(""), actualOutput));
     }
@@ -93,7 +93,7 @@ contract AIJudgeDeepTest is Test {
             bytes(""),
             bytes(""),
             msg_,
-            AIJudge.ConvoHistory("", "", "")
+            SealedVerdict.ConvoHistory("", "", "")
         );
         vm.mockCall(LLM, llmInput, abi.encode(bytes(""), actualOutput));
     }

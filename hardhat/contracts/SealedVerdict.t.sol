@@ -2,10 +2,10 @@
 pragma solidity ^0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {AIJudge} from "./AIJudge.sol";
+import {SealedVerdict} from "./SealedVerdict.sol";
 
-contract AIJudgeTest is Test {
-    AIJudge judge;
+contract SealedVerdictTest is Test {
+    SealedVerdict judge;
 
     address owner = address(0x1);
     address alice = address(0x2);
@@ -19,7 +19,7 @@ contract AIJudgeTest is Test {
     address constant LLM = address(0x0802);
 
     function setUp() public {
-        judge = new AIJudge();
+        judge = new SealedVerdict();
         deadline = block.timestamp + 1 days;
 
         vm.deal(owner, 10 ether);
@@ -69,7 +69,7 @@ contract AIJudgeTest is Test {
             completion,
             bytes(""),
             "",
-            AIJudge.ConvoHistory("", "", "")
+            SealedVerdict.ConvoHistory("", "", "")
         );
         // precompile raw output: (simmedInput, actualOutput)
         vm.mockCall(LLM, llmInput, abi.encode(bytes(""), actualOutput));

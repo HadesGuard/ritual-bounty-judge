@@ -8,7 +8,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { keccak256, encodePacked, parseEther, toHex } from "viem";
 
-describe("AIJudge commit-reveal integration", async () => {
+describe("SealedVerdict commit-reveal integration", async () => {
   const { viem, networkHelpers } = await network.create();
   const [owner, alice, bob, carol] = await viem.getWalletClients();
 
@@ -26,7 +26,7 @@ describe("AIJudge commit-reveal integration", async () => {
     );
 
   async function deployWithBounty() {
-    const judge = await viem.deployContract("AIJudge");
+    const judge = await viem.deployContract("SealedVerdict");
     const now = BigInt(await networkHelpers.time.latest());
     const deadline = now + 3600n;
     await judge.write.createBounty(["Title", "Rubric", deadline], {
