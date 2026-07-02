@@ -3,6 +3,13 @@
 Commit-reveal upgrade of `AIJudge.sol`. Answers stay hidden until the submission
 deadline passes; only verified reveals are eligible for Ritual LLM batch judging.
 
+## Deployment (Ritual chain, chainId 1979)
+
+- Contract: `0x9eA7235d9D9870c53EA41868C84EAD757ee86e3c`
+- Deploy tx: `0x6779c6b51f62b11f1a211d50162951588ed6511d0093e0141fe8b35111b2e570`
+- Deployer: `0xB6F30F2577FC57ec3c46d79438f10EFC85a504a1`
+- Deployed via Hardhat Ignition (`ignition/modules/AIJudge.ts`)
+
 ## Lifecycle
 
 ```
