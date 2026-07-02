@@ -1,40 +1,41 @@
 @import "tailwindcss";
 
 /*
-  SealedVerdict — "The Docket". Warm codex theme grounded in ritual.net's real
-  brand tokens. Role-based color vars flip between dark (default) and light via
-  the `.light` class on <html>. See DESIGN.md.
+  SealedVerdict — bold "docket" system. Neubrutalist: thick edges, hard offset
+  shadows, saturated flats, chunky display type. Role tokens flip light/dark via
+  the `.light` / default class. `--edge` is the signature line+shadow color.
 */
 
 :root {
   /* Dark (default) */
-  --bg: #1c1917; /* page ground (warm near-black) */
-  --surface: #211e1b; /* recessed: inputs, hash cells, wells */
-  --fg: #f5f0e8; /* primary text (warm off-white) */
-  --muted: #a8a29e; /* captions, secondary labels */
-  --faint: #78716c; /* tertiary / disabled */
-  --line: #3a3531; /* hairlines */
-  --line2: #4a443f; /* heavier closing rules */
-  --on-accent: #f5f0e8; /* text on the emerald button (light in both themes) */
-  --emerald: #1a6b4a; /* primary action / settled */
-  --emerald-bright: #34a37a; /* links, focus, live countdown, selection */
-  --gilt: #c99a3b; /* reveal-open / pending / awaiting */
-  --seal: #b4472e; /* errors, destructive, negative-final */
+  --bg: #17130f;
+  --surface: #221d16;
+  --fg: #f3ecdc;
+  --muted: #a79e8c;
+  --faint: #7c7365;
+  --edge: #f3ecdc; /* borders + hard shadows on dark = light */
+  --on-accent: #f6f0e2;
+  /* accents keep the token NAMES the app already uses, bold values */
+  --emerald: #2a44da; /* primary (cobalt) */
+  --emerald-bright: #7f90ef; /* links on dark */
+  --gilt: #ffc93c; /* butter — reveal/pending */
+  --seal: #ff4a24; /* vermilion — the wax seal, errors */
+  --mint: #16c090;
 }
 
 html.light {
-  --bg: #f5f0e8; /* warm paper */
-  --surface: #eae3d6; /* recessed warm tint */
-  --fg: #1c1917; /* warm ink */
-  --muted: #6b655e; /* captions */
-  --faint: #9c948a; /* tertiary */
-  --line: #ded6c7; /* hairlines */
-  --line2: #cbc1af; /* heavier rules */
-  --on-accent: #f5f0e8;
-  --emerald: #1a6b4a;
-  --emerald-bright: #15603e; /* darker so links stay readable on paper */
-  --gilt: #8a6410;
-  --seal: #a2371f;
+  --bg: #f0e7d3;
+  --surface: #fbf6ea;
+  --fg: #17130f;
+  --muted: #6e6656;
+  --faint: #9a917e;
+  --edge: #17130f; /* borders + hard shadows on light = ink */
+  --on-accent: #f6f0e2;
+  --emerald: #2a44da;
+  --emerald-bright: #2437b8; /* darker cobalt for readable links on paper */
+  --gilt: #e0a417;
+  --seal: #e8401d;
+  --mint: #0f9d72;
 }
 
 @theme inline {
@@ -43,16 +44,18 @@ html.light {
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
-  --color-line: var(--line);
-  --color-line2: var(--line2);
+  --color-edge: var(--edge);
+  --color-line: var(--edge);
+  --color-line2: var(--edge);
   --color-on-accent: var(--on-accent);
   --color-emerald: var(--emerald);
   --color-emerald-bright: var(--emerald-bright);
   --color-gilt: var(--gilt);
   --color-seal: var(--seal);
+  --color-mint: var(--mint);
 
-  --font-sans: var(--font-schibsted);
-  --font-serif: var(--font-newsreader);
+  --font-sans: var(--font-archivo);
+  --font-serif: var(--font-bricolage); /* display */
   --font-mono: var(--font-jetbrains);
 }
 
@@ -66,48 +69,42 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Paper grain: a fixed, non-interactive noise wash blended over everything so
-   the surface reads as printed stock, not a flat digital fill. Mid-gray noise
-   under soft-light barely shifts color, just adds tooth. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  mix-blend-mode: soft-light;
-  opacity: 0.5;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-html.light body::after {
-  opacity: 0.35;
-}
-
 ::selection {
-  background: color-mix(in srgb, var(--emerald-bright) 30%, transparent);
+  background: var(--gilt);
+  color: #17130f;
 }
 
-/* The accountant's closing rule: marks anything final. */
+/* Hard offset shadow — the neubrutalist signature. Flips with --edge. */
+.hard {
+  box-shadow: 4px 4px 0 var(--edge);
+}
+.hard-lg {
+  box-shadow: 6px 6px 0 var(--edge);
+}
+/* the accountant's closing rule — marks anything final */
 .rule-double {
   border: 0;
-  border-top: 1px solid var(--line2);
-  box-shadow: 0 3px 0 -2px var(--line2);
+  border-top: 2px solid var(--edge);
+  box-shadow: 0 4px 0 -2px var(--edge);
+}
+/* pressed: shadow collapses, element nudges into it */
+.press:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--edge);
 }
 
-/* Sealed -> revealed transition. */
 @keyframes seal-open {
   from {
     opacity: 0;
-    transform: translateY(1px);
+    transform: translateY(2px) rotate(-2deg);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotate(0);
   }
 }
 .animate-seal-open {
-  animation: seal-open 160ms ease-out;
+  animation: seal-open 180ms ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -115,7 +112,6 @@ html.light body::after {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }

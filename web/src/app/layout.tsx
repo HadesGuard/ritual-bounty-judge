@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Newsreader, Schibsted_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Archivo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
 
-const newsreader = Newsreader({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
+  weight: ["600", "700", "800"],
+  variable: "--font-bricolage",
 });
 
-const schibsted = Schibsted_Grotesk({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-schibsted",
+  variable: "--font-archivo",
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -37,17 +35,13 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${newsreader.variable} ${schibsted.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${bricolage.variable} ${archivo.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col bg-bg text-fg">
         <Script id="sv-theme-init" strategy="beforeInteractive">
           {`try{if(localStorage.getItem('sv-theme')==='light')document.documentElement.classList.add('light')}catch(e){}`}
         </Script>
-        <Providers>
-          <SiteHeader />
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
