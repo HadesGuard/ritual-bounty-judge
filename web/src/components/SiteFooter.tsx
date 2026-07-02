@@ -9,7 +9,7 @@ export function SiteFooter() {
   const explorer = ritualChain.blockExplorers?.default.url;
   return (
     <footer className="mx-auto mt-16 w-full max-w-[1120px] px-5 pb-8 sm:px-10">
-      <div className="grid grid-cols-1 gap-3 border-t border-emphasis pt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-stone sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 border-t border-line2 pt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-muted sm:grid-cols-3">
         <div>
           {contractAddress ? (
             <>
@@ -17,7 +17,7 @@ export function SiteFooter() {
               <CopyText
                 value={contractAddress}
                 display={shortenAddress(contractAddress, 6)}
-                className="text-[11px] uppercase text-paper"
+                className="text-[11px] uppercase text-fg"
               />
             </>
           ) : (
@@ -30,7 +30,7 @@ export function SiteFooter() {
               href={explorer}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-mute underline-offset-4 hover:decoration-paper hover:text-paper"
+              className="underline decoration-faint underline-offset-4 hover:decoration-fg hover:text-fg"
             >
               Explorer ↗
             </a>

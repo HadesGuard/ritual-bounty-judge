@@ -77,17 +77,17 @@ export function PhaseTimeline({ bounty }: { bounty: Bounty }) {
           return (
             <div
               key={label}
-              className={`border-t-2 pb-3 pt-2 ${reached ? "border-emerald" : "border-rule"} ${
+              className={`border-t-2 pb-3 pt-2 ${reached ? "border-emerald" : "border-line"} ${
                 i > 0 ? "sm:pl-4" : ""
               } ${i > 0 ? "border-t sm:border-t-2" : ""}`}
             >
               <div className="flex items-baseline gap-2">
-                <span className="font-mono text-[11px] tracking-[0.08em] text-stone">
+                <span className="font-mono text-[11px] tracking-[0.08em] text-muted">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
                   className={`font-mono text-[11px] uppercase tracking-[0.08em] ${
-                    reached ? "text-paper" : "text-mute"
+                    reached ? "text-fg" : "text-faint"
                   }`}
                 >
                   {label}
@@ -95,7 +95,7 @@ export function PhaseTimeline({ bounty }: { bounty: Bounty }) {
               </div>
               <div
                 className={`mt-1 font-mono text-[12px] ${
-                  live ? "text-emerald-bright" : reached ? "text-stone" : "text-mute"
+                  live ? "text-emerald-bright" : reached ? "text-muted" : "text-faint"
                 }`}
               >
                 {text}
@@ -108,7 +108,7 @@ export function PhaseTimeline({ bounty }: { bounty: Bounty }) {
         <div className="mt-0">
           <div className="rule-double" />
           <div className="pt-2">
-            <span className="inline-flex items-center border border-paper bg-paper px-1.5 py-[3px] font-mono text-[11px] uppercase tracking-[0.08em] text-ink">
+            <span className="inline-flex items-center border border-fg bg-fg px-1.5 py-[3px] font-mono text-[11px] uppercase tracking-[0.08em] text-bg">
               Judgment entered
             </span>
           </div>

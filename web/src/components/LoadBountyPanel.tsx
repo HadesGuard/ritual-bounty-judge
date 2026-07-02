@@ -54,7 +54,7 @@ export function LoadBountyPanel({
 
         {recentIds.length > 0 && (
           <div className="mt-6">
-            <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+            <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
               Viewed
             </div>
             <ul>
@@ -62,9 +62,9 @@ export function LoadBountyPanel({
                 <li key={id}>
                   <button
                     onClick={() => load(id)}
-                    className="flex w-full items-baseline gap-4 border-t border-rule py-2.5 text-left transition-colors hover:bg-paper/[0.04]"
+                    className="flex w-full items-baseline gap-4 border-t border-line py-2.5 text-left transition-colors hover:bg-fg/[0.04]"
                   >
-                    <span className="font-mono text-[12px] text-stone">
+                    <span className="font-mono text-[12px] text-muted">
                       No. {id}
                     </span>
                     <span className="ml-auto font-mono text-[12px] text-emerald-bright">
@@ -73,7 +73,7 @@ export function LoadBountyPanel({
                   </button>
                 </li>
               ))}
-              <li className="border-t border-emphasis" />
+              <li className="border-t border-line2" />
             </ul>
           </div>
         )}

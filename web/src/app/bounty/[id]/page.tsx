@@ -29,8 +29,8 @@ export default function BountyPage({
   return (
     <main className="mx-auto max-w-[1120px] px-5 sm:px-10">
       {/* Docket line */}
-      <div className="flex items-center justify-between border-b border-rule py-3 font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
-        <Link href="/" className="transition-colors hover:text-paper">
+      <div className="flex items-center justify-between border-b border-line py-3 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+        <Link href="/" className="transition-colors hover:text-fg">
           ← Docket
         </Link>
         {bountyId !== null && <span>No. {bountyId.toString()}</span>}

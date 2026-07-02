@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Newsreader, Schibsted_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -37,7 +38,10 @@ export default function RootLayout({
       lang="en"
       className={`${newsreader.variable} ${schibsted.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-screen flex-col bg-ink text-paper">
+      <body className="flex min-h-screen flex-col bg-bg text-fg">
+        <Script id="sv-theme-init" strategy="beforeInteractive">
+          {`try{if(localStorage.getItem('sv-theme')==='light')document.documentElement.classList.add('light')}catch(e){}`}
+        </Script>
         <Providers>
           <SiteHeader />
           <div className="flex-1">{children}</div>

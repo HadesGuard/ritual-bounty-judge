@@ -13,7 +13,7 @@ export function Card({
   className?: string;
 }) {
   return (
-    <section className={`border-t border-rule ${className}`}>{children}</section>
+    <section className={`border-t border-line ${className}`}>{children}</section>
   );
 }
 
@@ -33,16 +33,16 @@ export function CardHeader({
     <div className="flex items-start justify-between gap-4 pt-6">
       <div className="flex min-w-0 gap-4">
         {index ? (
-          <span className="mt-1.5 font-mono text-[11px] tracking-[0.08em] text-stone">
+          <span className="mt-1.5 font-mono text-[11px] tracking-[0.08em] text-muted">
             {index}
           </span>
         ) : null}
         <div className="min-w-0">
-          <h2 className="font-serif text-[21px] font-medium leading-tight text-paper">
+          <h2 className="font-serif text-[21px] font-medium leading-tight text-fg">
             {title}
           </h2>
           {subtitle ? (
-            <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+            <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
               {subtitle}
             </p>
           ) : null}
@@ -73,7 +73,7 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <div className={`border border-rule p-5 ${className}`}>{children}</div>
+    <div className={`border border-line p-5 ${className}`}>{children}</div>
   );
 }
 
@@ -89,11 +89,11 @@ export function PanelHeader({
   return (
     <div className="mb-4 flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h3 className="font-mono text-[11px] uppercase tracking-[0.08em] text-paper">
+        <h3 className="font-mono text-[11px] uppercase tracking-[0.08em] text-fg">
           {title}
         </h3>
         {subtitle ? (
-          <p className="mt-1 text-[13px] leading-snug text-stone">{subtitle}</p>
+          <p className="mt-1 text-[13px] leading-snug text-muted">{subtitle}</p>
         ) : null}
       </div>
       {action}
@@ -105,7 +105,7 @@ export function PanelHeader({
 
 export function Kicker({ children }: { children: ReactNode }) {
   return (
-    <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-stone">
+    <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
       {children}
     </span>
   );
@@ -119,9 +119,9 @@ const STAMP: Record<Tone, string> = {
   green: "border-emerald/60 text-emerald-bright bg-emerald/10",
   amber: "border-gilt/60 text-gilt bg-gilt/10",
   red: "border-seal/60 text-seal bg-seal/10",
-  zinc: "border-rule text-stone",
+  zinc: "border-line text-muted",
   // The app's only inverted element (AI PICK / pending). Zero violet.
-  indigo: "border-paper bg-paper text-ink",
+  indigo: "border-fg bg-fg text-bg",
 };
 
 export function Badge({
@@ -158,11 +158,11 @@ export function Button({
     "inline-flex items-center justify-center gap-2 rounded-[2px] font-mono text-[12px] uppercase tracking-[0.08em] transition-colors duration-150 disabled:cursor-not-allowed";
   const styles: Record<string, string> = {
     primary:
-      "h-9 px-4 bg-emerald text-paper hover:bg-[#15583c] disabled:bg-emerald/30 disabled:text-paper/50",
+      "h-9 px-4 bg-emerald text-on-accent hover:bg-[#15583c] disabled:bg-emerald/30 disabled:text-on-accent/50",
     secondary:
-      "h-9 px-4 border border-paper/25 text-paper hover:bg-paper/5 disabled:text-mute disabled:border-rule",
+      "h-9 px-4 border border-fg/25 text-fg hover:bg-fg/5 disabled:text-faint disabled:border-line",
     ghost:
-      "text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright disabled:text-mute disabled:no-underline",
+      "text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright disabled:text-faint disabled:no-underline",
   };
   return (
     <button className={`${base} ${styles[variant]} ${className}`} {...rest}>
@@ -184,12 +184,12 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+      <span className="mb-1.5 block font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
         {label}
       </span>
       {children}
       {hint ? (
-        <span className="mt-1.5 block font-mono text-[11px] text-mute">
+        <span className="mt-1.5 block font-mono text-[11px] text-faint">
           {hint}
         </span>
       ) : null}
@@ -198,7 +198,7 @@ export function Field({
 }
 
 const inputBase =
-  "w-full rounded-[2px] border border-paper/20 bg-well px-3 py-2 text-[15px] text-paper placeholder:text-mute focus:border-emerald-bright focus:outline-none focus:ring-1 focus:ring-emerald-bright";
+  "w-full rounded-[2px] border border-fg/20 bg-surface px-3 py-2 text-[15px] text-fg placeholder:text-faint focus:border-emerald-bright focus:outline-none focus:ring-1 focus:ring-emerald-bright";
 
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`${inputBase} ${props.className ?? ""}`} />;
@@ -285,8 +285,8 @@ export function Notice({
     green: "border-emerald/60 bg-emerald/[0.06] text-emerald-bright",
     amber: "border-gilt/60 bg-gilt/[0.06] text-gilt",
     red: "border-seal/60 bg-seal/[0.06] text-seal",
-    zinc: "border-rule bg-paper/[0.03] text-stone",
-    indigo: "border-paper/40 bg-paper/[0.04] text-paper",
+    zinc: "border-line bg-fg/[0.03] text-muted",
+    indigo: "border-fg/40 bg-fg/[0.04] text-fg",
   };
   return (
     <div
@@ -299,11 +299,11 @@ export function Notice({
 
 export function Stat({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="border-t border-rule pt-2">
-      <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+    <div className="border-t border-line pt-2">
+      <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
         {label}
       </div>
-      <div className="mt-0.5 break-words font-mono text-[15px] text-paper">
+      <div className="mt-0.5 break-words font-mono text-[15px] text-fg">
         {value}
       </div>
     </div>
@@ -334,7 +334,7 @@ export function CopyText({
           () => {},
         );
       }}
-      className={`font-mono underline decoration-dotted decoration-mute underline-offset-4 transition-colors hover:decoration-paper ${className}`}
+      className={`font-mono underline decoration-dotted decoration-faint underline-offset-4 transition-colors hover:decoration-fg ${className}`}
       title="Copy"
     >
       {copied ? "COPIED" : (display ?? value)}
@@ -345,5 +345,5 @@ export function CopyText({
 /* --------------------------------------------------------------- Skeleton */
 
 export function SkeletonBar({ className = "" }: { className?: string }) {
-  return <span className={`inline-block animate-pulse bg-paper/[0.08] ${className}`} />;
+  return <span className={`inline-block animate-pulse bg-fg/[0.08] ${className}`} />;
 }

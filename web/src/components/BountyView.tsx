@@ -24,9 +24,9 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="border-t border-rule pt-6">
+    <section className="border-t border-line pt-6">
       <div className="flex gap-4">
-        <span className="font-mono text-[11px] tracking-[0.08em] text-stone">
+        <span className="font-mono text-[11px] tracking-[0.08em] text-muted">
           {index}
         </span>
         <h2 className="font-serif text-[21px] font-medium">{title}</h2>
@@ -80,10 +80,10 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
   if (/^0x0+$/.test(bounty.owner)) {
     return (
       <div>
-        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
           No such entry
         </div>
-        <p className="mt-2 font-serif text-[18px] text-paper">
+        <p className="mt-2 font-serif text-[18px] text-fg">
           Docket No. {bountyId.toString()} has not been filed.
         </p>
         <Link
@@ -104,7 +104,7 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
       <BountyDetail bountyId={bountyId} bounty={bounty} isOwner={isOwner} />
 
       <Section index="01" title="Brief">
-        <p className="max-w-[68ch] whitespace-pre-wrap break-words text-[15px] leading-[1.6] text-stone">
+        <p className="max-w-[68ch] whitespace-pre-wrap break-words text-[15px] leading-[1.6] text-muted">
           {bounty.rubric || "No rubric provided."}
         </p>
       </Section>

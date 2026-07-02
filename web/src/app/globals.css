@@ -1,23 +1,55 @@
 @import "tailwindcss";
 
 /*
-  SealedVerdict — "The Docket". Warm dark codex theme grounded in ritual.net's
-  real brand tokens (ink #1C1917 / paper #F5F0E8 / emerald #1A6B4A), inverted
-  into a warm dark dapp surface. See DESIGN.md.
+  SealedVerdict — "The Docket". Warm codex theme grounded in ritual.net's real
+  brand tokens. Role-based color vars flip between dark (default) and light via
+  the `.light` class on <html>. See DESIGN.md.
 */
 
+:root {
+  /* Dark (default) */
+  --bg: #1c1917; /* page ground (warm near-black) */
+  --surface: #211e1b; /* recessed: inputs, hash cells, wells */
+  --fg: #f5f0e8; /* primary text (warm off-white) */
+  --muted: #a8a29e; /* captions, secondary labels */
+  --faint: #78716c; /* tertiary / disabled */
+  --line: #3a3531; /* hairlines */
+  --line2: #4a443f; /* heavier closing rules */
+  --on-accent: #f5f0e8; /* text on the emerald button (light in both themes) */
+  --emerald: #1a6b4a; /* primary action / settled */
+  --emerald-bright: #34a37a; /* links, focus, live countdown, selection */
+  --gilt: #c99a3b; /* reveal-open / pending / awaiting */
+  --seal: #b4472e; /* errors, destructive, negative-final */
+}
+
+html.light {
+  --bg: #f5f0e8; /* warm paper */
+  --surface: #eae3d6; /* recessed warm tint */
+  --fg: #1c1917; /* warm ink */
+  --muted: #6b655e; /* captions */
+  --faint: #9c948a; /* tertiary */
+  --line: #ded6c7; /* hairlines */
+  --line2: #cbc1af; /* heavier rules */
+  --on-accent: #f5f0e8;
+  --emerald: #1a6b4a;
+  --emerald-bright: #15603e; /* darker so links stay readable on paper */
+  --gilt: #8a6410;
+  --seal: #a2371f;
+}
+
 @theme inline {
-  --color-ink: #1c1917; /* page ground (warm near-black) */
-  --color-well: #211e1b; /* recessed: inputs, hash cells, wells */
-  --color-paper: #f5f0e8; /* primary text (warm off-white) */
-  --color-stone: #a8a29e; /* captions, secondary labels */
-  --color-mute: #78716c; /* tertiary / disabled */
-  --color-rule: #3a3531; /* hairlines */
-  --color-emphasis: #4a443f; /* heavier closing rules */
-  --color-emerald: #1a6b4a; /* primary action / links / settled */
-  --color-emerald-bright: #34a37a; /* focus, live countdown, selection */
-  --color-gilt: #c99a3b; /* reveal-open / pending / awaiting */
-  --color-seal: #b4472e; /* errors, destructive, negative-final */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line2: var(--line2);
+  --color-on-accent: var(--on-accent);
+  --color-emerald: var(--emerald);
+  --color-emerald-bright: var(--emerald-bright);
+  --color-gilt: var(--gilt);
+  --color-seal: var(--seal);
 
   --font-sans: var(--font-schibsted);
   --font-serif: var(--font-newsreader);
@@ -29,23 +61,23 @@ html {
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--bg);
+  color: var(--fg);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-emerald-bright) 30%, transparent);
+  background: color-mix(in srgb, var(--emerald-bright) 30%, transparent);
 }
 
 /* The accountant's closing rule: marks anything final. */
 .rule-double {
   border: 0;
-  border-top: 1px solid var(--color-emphasis);
-  box-shadow: 0 3px 0 -2px var(--color-emphasis);
+  border-top: 1px solid var(--line2);
+  box-shadow: 0 3px 0 -2px var(--line2);
 }
 
-/* Sealed → revealed transition (respects reduced motion via the guard below). */
+/* Sealed -> revealed transition. */
 @keyframes seal-open {
   from {
     opacity: 0;

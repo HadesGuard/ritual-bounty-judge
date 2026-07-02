@@ -24,10 +24,10 @@ export function SubmissionsList({
   if (count === 0) {
     return (
       <div>
-        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
           No exhibits
         </div>
-        <p className="mt-2 font-serif text-[18px] text-paper">
+        <p className="mt-2 font-serif text-[18px] text-fg">
           Commitments appear here as they are filed.
         </p>
       </div>
@@ -37,7 +37,7 @@ export function SubmissionsList({
   return (
     <div>
       {/* Column heads */}
-      <div className="grid grid-cols-[3rem_1fr_5rem] gap-4 border-b border-rule pb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-stone sm:grid-cols-[4rem_9rem_1fr_5rem]">
+      <div className="grid grid-cols-[3rem_1fr_5rem] gap-4 border-b border-line pb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted sm:grid-cols-[4rem_9rem_1fr_5rem]">
         <span>Exh.</span>
         <span className="hidden sm:block">Submitter</span>
         <span>Content</span>
@@ -86,20 +86,20 @@ function SubmissionRow({
 
   return (
     <div
-      className={`grid grid-cols-[3rem_1fr_5rem] items-start gap-4 border-t border-rule py-3 transition-colors sm:grid-cols-[4rem_9rem_1fr_5rem] ${
-        isWinner ? "bg-emerald/[0.08]" : "hover:bg-paper/[0.04]"
+      className={`grid grid-cols-[3rem_1fr_5rem] items-start gap-4 border-t border-line py-3 transition-colors sm:grid-cols-[4rem_9rem_1fr_5rem] ${
+        isWinner ? "bg-emerald/[0.08]" : "hover:bg-fg/[0.04]"
       }`}
     >
-      <div className="font-mono text-[13px] text-stone">
+      <div className="font-mono text-[13px] text-muted">
         {String(index).padStart(2, "0")}
       </div>
 
-      <div className="hidden font-mono text-[13px] text-paper sm:block">
+      <div className="hidden font-mono text-[13px] text-fg sm:block">
         {submitter ? (
           <CopyText
             value={submitter}
             display={shortenAddress(submitter)}
-            className="text-[13px] text-paper"
+            className="text-[13px] text-fg"
           />
         ) : isLoading ? (
           <SkeletonBar className="h-3 w-[11ch]" />
@@ -112,12 +112,12 @@ function SubmissionRow({
         {isLoading ? (
           <SkeletonBar className="h-3 w-[24ch]" />
         ) : revealed ? (
-          <p className="animate-seal-open whitespace-pre-wrap break-words text-[14px] leading-snug text-paper">
+          <p className="animate-seal-open whitespace-pre-wrap break-words text-[14px] leading-snug text-fg">
             {answer}
           </p>
         ) : (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="break-all bg-well px-2 py-1 font-mono text-[12px] text-stone">
+            <span className="break-all bg-surface px-2 py-1 font-mono text-[12px] text-muted">
               {commitment}
             </span>
           </div>
@@ -134,8 +134,8 @@ function SubmissionRow({
           {isWinner ? <Badge tone="green">Judgment</Badge> : null}
         </div>
         {ranking?.reason ? (
-          <p className="mt-2 border-t border-rule pt-2 text-[13px] text-stone">
-            <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-mute">
+          <p className="mt-2 border-t border-line pt-2 text-[13px] text-muted">
+            <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
               Model note{" "}
             </span>
             {ranking.reason}

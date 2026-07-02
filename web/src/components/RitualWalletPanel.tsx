@@ -42,7 +42,7 @@ export function RitualWalletPanel({
 
   if (!status.hasData) {
     return (
-      <div className="flex items-center gap-2 font-mono text-[12px] text-mute">
+      <div className="flex items-center gap-2 font-mono text-[12px] text-faint">
         <Spinner /> Checking RitualWallet funding
       </div>
     );
@@ -65,9 +65,9 @@ export function RitualWalletPanel({
   ];
 
   return (
-    <div className="border border-rule p-4">
+    <div className="border border-line p-4">
       <div className="flex items-center justify-between gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
           LLM fee preflight
         </span>
         {badge}
@@ -77,19 +77,19 @@ export function RitualWalletPanel({
         {rows.map(([k, v]) => (
           <div
             key={k}
-            className="flex items-baseline justify-between gap-3 border-t border-rule py-1.5"
+            className="flex items-baseline justify-between gap-3 border-t border-line py-1.5"
           >
-            <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-mute">
+            <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
               {k}
             </dt>
-            <dd className="font-mono text-[12px] text-paper">{v}</dd>
+            <dd className="font-mono text-[12px] text-fg">{v}</dd>
           </div>
         ))}
       </dl>
 
       {!ready && (
         <div className="mt-3 space-y-2">
-          <p className="font-mono text-[12px] text-stone">
+          <p className="font-mono text-[12px] text-muted">
             Judging spends prepaid RITUAL locked in RitualWallet. Deposit{" "}
             {formatEther(DEPOSIT_AMOUNT)} RITUAL and lock for{" "}
             {LOCK_DURATION.toLocaleString()} blocks.

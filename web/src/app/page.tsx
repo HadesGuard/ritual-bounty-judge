@@ -55,9 +55,9 @@ export default function Home() {
         <h1 className="mt-3 font-serif text-[44px] font-medium leading-[1.06]">
           Answers under seal. Verdicts on the record.
         </h1>
-        <p className="mt-4 max-w-[68ch] text-[15px] leading-[1.6] text-stone">
+        <p className="mt-4 max-w-[68ch] text-[15px] leading-[1.6] text-muted">
           Post a bounty with a rubric and an escrowed reward. Participants commit{" "}
-          <span className="font-mono text-[13px] text-paper">
+          <span className="font-mono text-[13px] text-fg">
             keccak256(answer, salt, sender, id)
           </span>{" "}
           before the deadline and reveal after it. Ritual&rsquo;s on-chain model
@@ -67,7 +67,7 @@ export default function Home() {
         <div className="mt-6 flex items-center gap-5">
           <a
             href="#file"
-            className="inline-flex h-9 items-center rounded-[2px] bg-emerald px-4 font-mono text-[12px] uppercase tracking-[0.08em] text-paper transition-colors hover:bg-[#15583c]"
+            className="inline-flex h-9 items-center rounded-[2px] bg-emerald px-4 font-mono text-[12px] uppercase tracking-[0.08em] text-on-accent transition-colors hover:bg-[#15583c]"
           >
             File a bounty →
           </a>
@@ -81,9 +81,9 @@ export default function Home() {
       </section>
 
       {/* 01 Procedure */}
-      <section id="procedure" className="border-t border-rule pt-6">
+      <section id="procedure" className="border-t border-line pt-6">
         <div className="flex gap-4">
-          <span className="font-mono text-[11px] tracking-[0.08em] text-stone">
+          <span className="font-mono text-[11px] tracking-[0.08em] text-muted">
             01
           </span>
           <h2 className="font-serif text-[21px] font-medium">Procedure</h2>
@@ -92,17 +92,17 @@ export default function Home() {
           {PROCEDURE.map((p, i) => (
             <div
               key={p.name}
-              className={`border-t border-rule py-4 sm:py-5 lg:border-t-0 ${
-                i > 0 ? "lg:border-l lg:border-rule lg:pl-5" : ""
+              className={`border-t border-line py-4 sm:py-5 lg:border-t-0 ${
+                i > 0 ? "lg:border-l lg:border-line lg:pl-5" : ""
               }`}
             >
-              <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+              <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
                 {p.step} · {p.name}
               </div>
-              <p className="mt-2 font-serif text-[18px] leading-snug text-paper">
+              <p className="mt-2 font-serif text-[18px] leading-snug text-fg">
                 {p.line}
               </p>
-              <p className="mt-2 font-mono text-[12px] text-stone">{p.detail}</p>
+              <p className="mt-2 font-mono text-[12px] text-muted">{p.detail}</p>
             </div>
           ))}
         </div>
@@ -118,12 +118,12 @@ export default function Home() {
       )}
 
       {/* 02 File a bounty */}
-      <div id="file" className="mt-16 border-t border-rule">
+      <div id="file" className="mt-16 border-t border-line">
         <CreateBountyForm onCreated={openBounty} />
       </div>
 
       {/* 03 Docket */}
-      <div className="mt-16 border-t border-rule">
+      <div className="mt-16 border-t border-line">
         <LoadBountyPanel onOpen={openBounty} recentIds={ids} />
       </div>
     </main>

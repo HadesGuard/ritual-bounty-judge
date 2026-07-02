@@ -17,11 +17,11 @@ function MetaCell({
   first?: boolean;
 }) {
   return (
-    <div className={first ? "" : "sm:border-l sm:border-rule sm:pl-4"}>
-      <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+    <div className={first ? "" : "sm:border-l sm:border-line sm:pl-4"}>
+      <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
         {label}
       </div>
-      <div className="mt-1 font-mono text-[13px] text-paper">{children}</div>
+      <div className="mt-1 font-mono text-[13px] text-fg">{children}</div>
     </div>
   );
 }
@@ -45,7 +45,7 @@ export function BountyDetail({
       {/* Case header */}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+          <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
             No. {bountyId.toString()}
           </div>
           <h1 className="mt-1 font-serif text-[30px] font-medium leading-tight">
@@ -59,20 +59,20 @@ export function BountyDetail({
       </div>
 
       {/* Meta ledger row */}
-      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 border-t border-rule pt-4 sm:grid-cols-5">
+      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 border-t border-line pt-4 sm:grid-cols-5">
         <MetaCell label="Reward" first>
           <span className="text-[15px]">{formatReward(bounty.reward)}</span>
         </MetaCell>
         <MetaCell label="Submissions">{bounty.submissionCount.toString()}</MetaCell>
         <MetaCell label="Commit deadline">
           {formatTimestamp(bounty.deadline)}
-          <span className="mt-0.5 block text-[11px] text-stone">
+          <span className="mt-0.5 block text-[11px] text-muted">
             {formatRelative(bounty.deadline)}
           </span>
         </MetaCell>
         <MetaCell label="Reveal closes">
           {formatTimestamp(revealClose)}
-          <span className="mt-0.5 block text-[11px] text-stone">
+          <span className="mt-0.5 block text-[11px] text-muted">
             {formatRelative(revealClose)}
           </span>
         </MetaCell>
@@ -80,7 +80,7 @@ export function BountyDetail({
           <CopyText
             value={bounty.owner}
             display={shortenAddress(bounty.owner)}
-            className="text-[13px] text-paper"
+            className="text-[13px] text-fg"
           />
         </MetaCell>
       </div>

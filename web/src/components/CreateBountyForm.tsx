@@ -190,28 +190,28 @@ export function CreateBountyForm({
 
           {/* Right: live filing summary ledger */}
           <div className="lg:pt-[26px]">
-            <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-stone">
+            <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
               Filing summary
             </div>
             <dl className="mt-2">
               {summaryRows.map(([k, v]) => (
                 <div
                   key={k}
-                  className="flex items-baseline justify-between gap-3 border-t border-rule py-2"
+                  className="flex items-baseline justify-between gap-3 border-t border-line py-2"
                 >
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-mute">
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
                     {k}
                   </dt>
-                  <dd className="text-right font-mono text-[12px] text-paper">
+                  <dd className="text-right font-mono text-[12px] text-fg">
                     {v}
                   </dd>
                 </div>
               ))}
               <div className="flex items-baseline justify-between gap-3 py-2">
-                <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-mute">
+                <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
                   Escrowed now
                 </dt>
-                <dd className="text-right font-mono text-[12px] text-paper">
+                <dd className="text-right font-mono text-[12px] text-fg">
                   {rewardLabel}
                 </dd>
               </div>
@@ -232,7 +232,7 @@ export function CreateBountyForm({
                 {tx.isBusy ? "Filing" : "Create and escrow →"}
               </Button>
               {!isConnected && (
-                <p className="mt-2 font-mono text-[11px] text-mute">
+                <p className="mt-2 font-mono text-[11px] text-faint">
                   Connect a wallet to file.
                 </p>
               )}
