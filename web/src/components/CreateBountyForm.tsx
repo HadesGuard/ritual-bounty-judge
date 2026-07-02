@@ -190,7 +190,7 @@ export function CreateBountyForm({
 
           {/* Right: live filing summary ledger */}
           <div className="lg:pt-[26px]">
-            <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+            <div className="text-[12px] text-muted">
               Filing summary
             </div>
             <dl className="mt-2">
@@ -199,7 +199,7 @@ export function CreateBountyForm({
                   key={k}
                   className="flex items-baseline justify-between gap-3 border-t border-line py-2"
                 >
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+                  <dt className="text-[12px] text-faint">
                     {k}
                   </dt>
                   <dd className="text-right font-mono text-[12px] text-fg">
@@ -208,14 +208,14 @@ export function CreateBountyForm({
                 </div>
               ))}
               <div className="flex items-baseline justify-between gap-3 py-2">
-                <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+                <dt className="text-[12px] text-faint">
                   Escrowed now
                 </dt>
                 <dd className="text-right font-mono text-[12px] text-fg">
                   {rewardLabel}
                 </dd>
               </div>
-              <div className="rule-double" />
+              <div className="border-t border-edge-strong" />
             </dl>
 
             <div className="mt-4">
@@ -232,7 +232,7 @@ export function CreateBountyForm({
                 {tx.isBusy ? "Filing" : "Create and escrow →"}
               </Button>
               {!isConnected && (
-                <p className="mt-2 font-mono text-[11px] text-faint">
+                <p className="mt-2 text-[12px] text-faint">
                   Connect a wallet to file.
                 </p>
               )}

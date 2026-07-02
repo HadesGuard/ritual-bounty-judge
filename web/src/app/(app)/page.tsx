@@ -54,7 +54,7 @@ export default function Home() {
       <section className="grid grid-cols-1 items-start gap-10 pb-16 pt-16 lg:grid-cols-[1fr_auto]">
         <div className="max-w-[640px]">
           <Kicker>Sealed-bid bounties, judged on chain</Kicker>
-          <h1 className="mt-3 font-serif text-[44px] font-medium leading-[1.06]">
+          <h1 className="mt-3 font-sans text-[44px] font-medium leading-[1.06]">
             Answers under seal. Verdicts on the record.
           </h1>
           <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.65] text-muted">
@@ -64,16 +64,16 @@ export default function Home() {
             off, a model on Ritual reads the whole batch, and you hand down the
             verdict. The winner is paid by the contract, not by your good word.
           </p>
-          <div className="mt-6 flex items-center gap-5">
+          <div className="mt-7 flex items-center gap-5">
             <a
               href="#file"
-              className="inline-flex h-9 items-center rounded-[2px] bg-emerald px-4 font-mono text-[12px] uppercase tracking-[0.08em] text-on-accent transition-transform duration-150 hover:-translate-y-0.5 hover:bg-[#15583c]"
+              className="inline-flex h-10 items-center rounded-lg bg-emerald px-5 text-[15px] font-medium text-on-accent transition-opacity hover:opacity-90"
             >
-              File a bounty →
+              File a bounty
             </a>
             <a
               href="#procedure"
-              className="font-mono text-[12px] uppercase tracking-[0.08em] text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright"
+              className="text-[15px] text-emerald-bright hover:underline underline-offset-4"
             >
               Read the procedure →
             </a>
@@ -88,10 +88,10 @@ export default function Home() {
       {/* 01 Procedure */}
       <section id="procedure" className="border-t border-line pt-6">
         <div className="flex gap-4">
-          <span className="font-mono text-[11px] tracking-[0.08em] text-muted">
+          <span className="text-[12px] text-muted">
             01
           </span>
-          <h2 className="font-serif text-[21px] font-medium">Procedure</h2>
+          <h2 className="font-sans text-[21px] font-medium">Procedure</h2>
         </div>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {PROCEDURE.map((p, i) => (
@@ -101,10 +101,10 @@ export default function Home() {
                 i > 0 ? "lg:border-l lg:border-line lg:pl-5" : ""
               }`}
             >
-              <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+              <div className="text-[12px] text-muted">
                 {p.step} · {p.name}
               </div>
-              <p className="mt-2 font-serif text-[18px] leading-snug text-fg">
+              <p className="mt-2 font-sans text-[18px] leading-snug text-fg">
                 {p.line}
               </p>
               <p className="mt-2 font-mono text-[12px] text-muted">{p.detail}</p>
@@ -123,12 +123,12 @@ export default function Home() {
       )}
 
       {/* 02 File a bounty */}
-      <div id="file" className="mt-16 border-t border-line">
+      <div id="file" className="mt-14 border-t border-line pt-8">
         <CreateBountyForm onCreated={openBounty} />
       </div>
 
       {/* 03 Docket */}
-      <div className="mt-16 border-t border-line">
+      <div className="mt-14 border-t border-line pt-8">
         <LoadBountyPanel onOpen={openBounty} recentIds={ids} />
       </div>
     </main>

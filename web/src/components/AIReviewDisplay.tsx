@@ -15,7 +15,7 @@ export function AIReviewDisplay({ aiReview }: { aiReview: `0x${string}` }) {
         <Notice tone="amber">
           The model&rsquo;s output could not be parsed as JSON. Raw text follows.
         </Notice>
-        <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-words border border-line bg-surface p-3 font-mono text-[12px] text-muted">
+        <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-words rounded-lg border border-edge bg-surface-1 p-3 font-mono text-[12px] text-muted">
           {raw}
         </pre>
       </div>
@@ -36,7 +36,7 @@ export function AIReviewDisplay({ aiReview }: { aiReview: `0x${string}` }) {
 
       {ranked.length > 0 && (
         <div className="mt-4">
-          <div className="grid grid-cols-[3rem_3rem_1fr] gap-4 border-b border-line pb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+          <div className="grid grid-cols-[3rem_3rem_1fr] gap-4 border-b border-line pb-2 text-[12px] uppercase tracking-[0.08em] text-muted">
             <span>Rank</span>
             <span>Exh.</span>
             <span>Reason</span>

@@ -129,7 +129,7 @@ function CommitCard({
           {tx.isBusy ? "Sealing" : "Commit under seal →"}
         </Button>
         {!isConnected && (
-          <p className="font-mono text-[11px] text-faint">
+          <p className="text-[12px] text-faint">
             Connect a wallet to submit.
           </p>
         )}
@@ -229,7 +229,7 @@ function RevealCard({
           {tx.isBusy ? "Opening" : "Open the seal →"}
         </Button>
         {!isConnected && (
-          <p className="font-mono text-[11px] text-faint">
+          <p className="text-[12px] text-faint">
             Connect a wallet to reveal.
           </p>
         )}

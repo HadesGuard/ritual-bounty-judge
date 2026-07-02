@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Bricolage_Grotesque, Archivo, JetBrains_Mono } from "next/font/google";
+import { Hanken_Grotesk, Source_Serif_4, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const bricolage = Bricolage_Grotesque({
+const hanken = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-bricolage",
+  variable: "--font-hanken",
 });
 
-const archivo = Archivo({
+const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
-  variable: "--font-archivo",
+  style: ["normal", "italic"],
+  variable: "--font-source-serif",
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -35,7 +35,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${bricolage.variable} ${archivo.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${hanken.variable} ${sourceSerif.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col bg-bg text-fg">
         <Script id="sv-theme-init" strategy="beforeInteractive">

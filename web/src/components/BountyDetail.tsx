@@ -18,7 +18,7 @@ function MetaCell({
 }) {
   return (
     <div className={first ? "" : "sm:border-l sm:border-line sm:pl-4"}>
-      <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+      <div className="text-[12px] text-muted">
         {label}
       </div>
       <div className="mt-1 font-mono text-[13px] text-fg">{children}</div>
@@ -45,10 +45,10 @@ export function BountyDetail({
       {/* Case header */}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+          <div className="text-[12px] text-muted">
             No. {bountyId.toString()}
           </div>
-          <h1 className="mt-1 font-serif text-[30px] font-medium leading-tight">
+          <h1 className="mt-1 font-sans text-[30px] font-medium leading-tight">
             {bounty.title || "Untitled"}
           </h1>
         </div>

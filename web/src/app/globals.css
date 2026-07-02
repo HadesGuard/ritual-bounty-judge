@@ -1,61 +1,73 @@
 @import "tailwindcss";
 
 /*
-  SealedVerdict — bold "docket" system. Neubrutalist: thick edges, hard offset
-  shadows, saturated flats, chunky display type. Role tokens flip light/dark via
-  the `.light` / default class. `--edge` is the signature line+shadow color.
+  SealedVerdict — Claude Design System (CDS) flavor. Warm neutral surfaces,
+  0.5px hairlines, soft radii, restraint. Clay is Claude's color (reserved for
+  the AI judging step); accent blue is for user actions; serif is Claude's
+  voice (the AI review). Role tokens flip light/dark via `.light` / default.
 */
 
 :root {
-  /* Dark (default) */
-  --bg: #17130f;
-  --surface: #221d16;
-  --fg: #f3ecdc;
-  --muted: #a79e8c;
-  --faint: #7c7365;
-  --edge: #f3ecdc; /* borders + hard shadows on dark = light */
-  --on-accent: #f6f0e2;
-  /* accents keep the token NAMES the app already uses, bold values */
-  --emerald: #2a44da; /* primary (cobalt) */
-  --emerald-bright: #7f90ef; /* links on dark */
-  --gilt: #ffc93c; /* butter — reveal/pending */
-  --seal: #ff4a24; /* vermilion — the wax seal, errors */
-  --mint: #16c090;
+  /* Dark (default) — warm charcoal canvas, like the Claude app */
+  --bg: #262624;
+  --surface: #30302e; /* cards, panels */
+  --surface-1: #2b2b29; /* wells, insets */
+  --fg: #f2f0ea;
+  --muted: #a8a59c;
+  --faint: #7c7a72;
+  --edge: #423f39; /* hairline border */
+  --edge-strong: #55514a;
+  --on-accent: #ffffff;
+  --emerald: #3b6fd4; /* accent blue fill — user actions */
+  --emerald-bright: #9bbcf2; /* accent text / links on dark */
+  --brand: #d97757; /* clay — Claude / AI judging */
+  --on-brand: #2a1509;
+  --gilt: #d8a648; /* amber — reveal / pending */
+  --seal: #c8553d; /* sealing-wax red — the seal + danger */
+  --mint: #5bb98c; /* green — settled / success */
 }
 
 html.light {
-  --bg: #f0e7d3;
-  --surface: #fbf6ea;
-  --fg: #17130f;
-  --muted: #6e6656;
-  --faint: #9a917e;
-  --edge: #17130f; /* borders + hard shadows on light = ink */
-  --on-accent: #f6f0e2;
-  --emerald: #2a44da;
-  --emerald-bright: #2437b8; /* darker cobalt for readable links on paper */
-  --gilt: #e0a417;
-  --seal: #e8401d;
-  --mint: #0f9d72;
+  --bg: #f7f5ef;
+  --surface: #ffffff;
+  --surface-1: #f1efe8;
+  --fg: #26241f;
+  --muted: #6e6b63;
+  --faint: #9b988e;
+  --edge: #e6e3da;
+  --edge-strong: #d5d1c6;
+  --on-accent: #ffffff;
+  --emerald: #2f6bd6; /* accent blue */
+  --emerald-bright: #235bbd;
+  --brand: #c15f3c; /* clay */
+  --on-brand: #ffffff;
+  --gilt: #b07d1a;
+  --seal: #b23a2e;
+  --mint: #2f8a5f;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
+  --color-surface-1: var(--surface-1);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
   --color-edge: var(--edge);
+  --color-edge-strong: var(--edge-strong);
   --color-line: var(--edge);
   --color-line2: var(--edge);
   --color-on-accent: var(--on-accent);
   --color-emerald: var(--emerald);
   --color-emerald-bright: var(--emerald-bright);
+  --color-brand: var(--brand);
+  --color-on-brand: var(--on-brand);
   --color-gilt: var(--gilt);
   --color-seal: var(--seal);
   --color-mint: var(--mint);
 
-  --font-sans: var(--font-archivo);
-  --font-serif: var(--font-bricolage); /* display */
+  --font-sans: var(--font-hanken);
+  --font-serif: var(--font-source-serif);
   --font-mono: var(--font-jetbrains);
 }
 
@@ -67,44 +79,32 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--gilt);
-  color: #17130f;
+  background: color-mix(in srgb, var(--emerald) 22%, transparent);
 }
 
-/* Hard offset shadow — the neubrutalist signature. Flips with --edge. */
-.hard {
-  box-shadow: 4px 4px 0 var(--edge);
-}
-.hard-lg {
-  box-shadow: 6px 6px 0 var(--edge);
-}
-/* the accountant's closing rule — marks anything final */
-.rule-double {
-  border: 0;
-  border-top: 2px solid var(--edge);
-  box-shadow: 0 4px 0 -2px var(--edge);
-}
-/* pressed: shadow collapses, element nudges into it */
-.press:active {
-  transform: translate(3px, 3px);
-  box-shadow: 1px 1px 0 var(--edge);
+/* soft elevation for popovers only; in-flow cards stay flat with a hairline */
+.shadow-pop {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 @keyframes seal-open {
   from {
     opacity: 0;
-    transform: translateY(2px) rotate(-2deg);
+    transform: translateY(2px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) rotate(0);
+    transform: translateY(0);
   }
 }
 .animate-seal-open {
-  animation: seal-open 180ms ease-out;
+  animation: seal-open 200ms ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -111,7 +111,12 @@ export function JudgeAll({
 
         <RitualWalletPanel status={walletStatus} onDeposited={walletStatus.refetch} />
 
-        <Button onClick={handleJudge} disabled={busy || !fundingReady} className="w-full">
+        <Button
+          variant="brand"
+          onClick={handleJudge}
+          disabled={busy || !fundingReady}
+          className="w-full"
+        >
           {gathering ? (
             <>
               <Spinner /> Gathering revealed answers
@@ -121,7 +126,7 @@ export function JudgeAll({
           ) : !fundingReady ? (
             "Fund RitualWallet to judge"
           ) : (
-            "Submit for judgment →"
+            "Submit for judgment"
           )}
         </Button>
         {gatherError && <Notice tone="red">{gatherError}</Notice>}

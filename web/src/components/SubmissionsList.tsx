@@ -25,10 +25,10 @@ export function SubmissionsList({
   if (count === 0) {
     return (
       <div>
-        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+        <div className="text-[12px] text-muted">
           No exhibits
         </div>
-        <p className="mt-2 font-serif text-[18px] text-fg">
+        <p className="mt-2 font-sans text-[18px] text-fg">
           Commitments appear here as they are filed.
         </p>
       </div>
@@ -38,7 +38,7 @@ export function SubmissionsList({
   return (
     <div>
       {/* Column heads */}
-      <div className="grid grid-cols-[3rem_1fr_5rem] gap-4 border-b border-line pb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted sm:grid-cols-[4rem_9rem_1fr_5rem]">
+      <div className="grid grid-cols-[3rem_1fr_5rem] gap-4 border-b border-line pb-2 text-[12px] text-muted sm:grid-cols-[4rem_9rem_1fr_5rem]">
         <span>Exh.</span>
         <span className="hidden sm:block">Submitter</span>
         <span>Content</span>
@@ -118,7 +118,7 @@ function SubmissionRow({
           </p>
         ) : (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="break-all bg-surface px-2 py-1 font-mono text-[12px] text-muted">
+            <span className="break-all rounded-md bg-surface-1 px-2 py-1 font-mono text-[12px] text-muted">
               {commitment}
             </span>
           </div>
@@ -127,7 +127,7 @@ function SubmissionRow({
           {revealed === false ? (
             <>
               <Seal size={18} title="sealed" />
-              <Badge tone="amber" className="rotate-[-1.5deg]">
+              <Badge tone="amber">
                 Sealed
               </Badge>
             </>
@@ -142,7 +142,7 @@ function SubmissionRow({
         </div>
         {ranking?.reason ? (
           <p className="mt-2 border-t border-line pt-2 text-[13px] text-muted">
-            <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+            <span className="text-[12px] text-faint">
               Model note{" "}
             </span>
             {ranking.reason}

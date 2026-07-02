@@ -3,7 +3,7 @@
 import { useState, type ReactNode, type ButtonHTMLAttributes } from "react";
 import type { TxState } from "@/hooks/useWriteTx";
 
-/* ------------------------------------------------ Card = bordered box */
+/* ------------------------------------------------------ Card / sections */
 
 export function Card({
   children,
@@ -13,7 +13,9 @@ export function Card({
   className?: string;
 }) {
   return (
-    <section className={`border-2 border-edge bg-surface hard-lg ${className}`}>
+    <section
+      className={`rounded-xl border border-edge bg-surface ${className}`}
+    >
       {children}
     </section>
   );
@@ -31,19 +33,19 @@ export function CardHeader({
   index?: string;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 pt-2">
+    <div className="flex items-start justify-between gap-4">
       <div className="flex min-w-0 items-baseline gap-3">
         {index ? (
-          <span className="font-mono text-[13px] font-bold text-emerald-bright">
-            {index}
-          </span>
+          <span className="font-mono text-[13px] text-faint">{index}</span>
         ) : null}
         <div className="min-w-0">
-          <h2 className="font-serif text-[24px] font-extrabold leading-none tracking-[-0.02em] text-fg">
+          <h2 className="text-[19px] font-medium leading-snug text-fg">
             {title}
           </h2>
           {subtitle ? (
-            <p className="mt-1.5 text-[14px] text-muted">{subtitle}</p>
+            <p className="mt-1 text-[14px] leading-normal text-muted">
+              {subtitle}
+            </p>
           ) : null}
         </div>
       </div>
@@ -59,10 +61,10 @@ export function CardBody({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={`pb-8 pt-4 ${className}`}>{children}</div>;
+  return <div className={`pt-4 ${className}`}>{children}</div>;
 }
 
-/* ------------------------------------------- Panel = action container */
+/* -------------------------------------------------- Panel = action card */
 
 export function Panel({
   children,
@@ -72,7 +74,7 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <div className={`border-2 border-edge bg-surface hard p-5 ${className}`}>
+    <div className={`rounded-xl border border-edge bg-surface p-5 ${className}`}>
       {children}
     </div>
   );
@@ -90,11 +92,9 @@ export function PanelHeader({
   return (
     <div className="mb-4 flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h3 className="font-serif text-[17px] font-bold uppercase tracking-[0.01em] text-fg">
-          {title}
-        </h3>
+        <h3 className="text-[16px] font-medium leading-snug text-fg">{title}</h3>
         {subtitle ? (
-          <p className="mt-1 text-[14px] leading-snug text-muted">{subtitle}</p>
+          <p className="mt-1 text-[14px] leading-normal text-muted">{subtitle}</p>
         ) : null}
       </div>
       {action}
@@ -104,22 +104,20 @@ export function PanelHeader({
 
 export function Kicker({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-block border-2 border-edge bg-mint px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-[#0b2b20]">
-      {children}
-    </span>
+    <span className="text-[13px] font-medium text-muted">{children}</span>
   );
 }
 
-/* -------------------------------------------------------- Stamp badge */
+/* ------------------------------------------------------------- Badge */
 
 type Tone = "green" | "amber" | "indigo" | "zinc" | "red";
 
-const STAMP: Record<Tone, string> = {
-  green: "bg-mint text-[#0b2b20] border-edge",
-  amber: "bg-gilt text-[#3a2a05] border-edge",
-  red: "bg-seal text-on-accent border-edge",
-  zinc: "bg-surface text-fg border-edge",
-  indigo: "bg-fg text-bg border-edge",
+const BADGE: Record<Tone, string> = {
+  green: "bg-mint/15 text-mint",
+  amber: "bg-gilt/15 text-gilt",
+  red: "bg-seal/15 text-seal",
+  zinc: "bg-surface-1 text-muted",
+  indigo: "bg-brand/15 text-brand", // Claude / AI accent
 };
 
 export function Badge({
@@ -133,17 +131,17 @@ export function Badge({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 border-2 px-2 py-[3px] font-mono text-[11px] font-bold uppercase tracking-[0.05em] ${STAMP[tone]} ${className}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[12px] font-medium ${BADGE[tone]} ${className}`}
     >
       {children}
     </span>
   );
 }
 
-/* ------------------------------------------------------------- Button */
+/* ------------------------------------------------------------ Button */
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "brand";
 };
 
 export function Button({
@@ -153,14 +151,13 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center gap-2 font-serif text-[14px] font-bold uppercase tracking-[0.03em] transition-transform disabled:cursor-not-allowed disabled:opacity-50";
+    "inline-flex items-center justify-center gap-2 rounded-lg text-[14px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
   const styles: Record<string, string> = {
-    primary:
-      "border-2 border-edge bg-emerald text-on-accent px-4 py-2.5 hard press",
+    primary: "h-9 px-4 bg-emerald text-on-accent hover:opacity-90",
+    brand: "h-9 px-4 bg-brand text-on-brand hover:opacity-90",
     secondary:
-      "border-2 border-edge bg-surface text-fg px-4 py-2.5 hard press",
-    ghost:
-      "text-emerald-bright underline decoration-2 decoration-emerald-bright/50 underline-offset-4 hover:decoration-emerald-bright",
+      "h-9 px-4 border border-edge-strong text-fg hover:bg-surface-1",
+    ghost: "text-emerald-bright hover:underline underline-offset-4",
   };
   return (
     <button className={`${base} ${styles[variant]} ${className}`} {...rest}>
@@ -182,7 +179,7 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-fg">
+      <span className="mb-1.5 block text-[13px] font-medium text-fg">
         {label}
       </span>
       {children}
@@ -194,7 +191,7 @@ export function Field({
 }
 
 const inputBase =
-  "w-full border-2 border-edge bg-bg px-3 py-2.5 text-[15px] text-fg placeholder:text-faint focus:outline-none focus:[box-shadow:3px_3px_0_var(--color-edge)]";
+  "w-full rounded-lg border border-edge bg-surface-1 px-3 py-2 text-[15px] text-fg placeholder:text-faint transition-shadow focus:outline-none focus:border-emerald focus:[box-shadow:0_0_0_3px_color-mix(in_srgb,var(--color-emerald)_22%,transparent)]";
 
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`${inputBase} ${props.className ?? ""}`} />;
@@ -215,10 +212,10 @@ export function Textarea(
 
 const TX_LABEL: Record<TxState, string> = {
   idle: "",
-  wallet: "AWAITING SIGNATURE",
-  pending: "PENDING",
-  confirmed: "CONFIRMED",
-  failed: "FAILED",
+  wallet: "Awaiting signature",
+  pending: "Pending",
+  confirmed: "Confirmed",
+  failed: "Failed",
 };
 
 const TX_TONE: Record<TxState, Tone> = {
@@ -242,22 +239,22 @@ export function TxStatus({
 }) {
   if (state === "idle" && !error) return null;
   return (
-    <div className="mt-3 flex flex-wrap items-center gap-2 text-[12px]">
+    <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px]">
       <Badge tone={TX_TONE[state]}>
         {(state === "wallet" || state === "pending") && <Spinner />}
         {TX_LABEL[state]}
       </Badge>
       {state === "failed" && error ? (
-        <span className="break-words font-mono text-seal">{error}</span>
+        <span className="break-words text-seal">{error}</span>
       ) : null}
       {hash && explorerBase ? (
         <a
           href={`${explorerBase}/tx/${hash}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-mono font-bold uppercase text-emerald-bright underline decoration-2 underline-offset-4"
+          className="text-emerald-bright hover:underline underline-offset-4"
         >
-          VIEW TX ↗
+          View transaction ↗
         </a>
       ) : null}
     </div>
@@ -278,15 +275,22 @@ export function Notice({
   children: ReactNode;
 }) {
   const styles: Record<Tone, string> = {
-    green: "bg-mint text-[#0b2b20]",
-    amber: "bg-gilt text-[#3a2a05]",
-    red: "bg-seal text-on-accent",
-    zinc: "bg-surface text-fg",
-    indigo: "bg-fg text-bg",
+    green: "bg-mint/10 text-fg",
+    amber: "bg-gilt/10 text-fg",
+    red: "bg-seal/10 text-fg",
+    zinc: "bg-surface-1 text-muted",
+    indigo: "bg-brand/10 text-fg",
+  };
+  const bar: Record<Tone, string> = {
+    green: "border-l-mint",
+    amber: "border-l-gilt",
+    red: "border-l-seal",
+    zinc: "border-l-edge-strong",
+    indigo: "border-l-brand",
   };
   return (
     <div
-      className={`border-2 border-edge px-3 py-2.5 text-[13px] font-medium leading-relaxed ${styles[tone]}`}
+      className={`rounded-lg border-l-2 px-3 py-2.5 text-[13px] leading-relaxed ${styles[tone]} ${bar[tone]}`}
     >
       {children}
     </div>
@@ -296,10 +300,8 @@ export function Notice({
 export function Stat({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div>
-      <div className="font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-muted">
-        {label}
-      </div>
-      <div className="mt-1 break-words font-mono text-[15px] font-medium text-fg">
+      <div className="text-[12px] text-muted">{label}</div>
+      <div className="mt-1 break-words text-[15px] font-medium text-fg">
         {value}
       </div>
     </div>
@@ -333,13 +335,13 @@ export function CopyText({
       className={`font-mono underline decoration-dotted decoration-faint underline-offset-4 transition-colors hover:decoration-fg ${className}`}
       title="Copy"
     >
-      {copied ? "COPIED" : (display ?? value)}
+      {copied ? "Copied" : (display ?? value)}
     </button>
   );
 }
 
 export function SkeletonBar({ className = "" }: { className?: string }) {
   return (
-    <span className={`inline-block animate-pulse border-2 border-edge/20 bg-edge/[0.06] ${className}`} />
+    <span className={`inline-block animate-pulse rounded bg-edge/60 ${className}`} />
   );
 }

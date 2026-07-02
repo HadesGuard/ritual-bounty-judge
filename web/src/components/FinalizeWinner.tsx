@@ -74,7 +74,7 @@ export function FinalizeWinner({
       />
       <div className="space-y-3">
         {recommended !== undefined ? (
-          <p className="font-serif text-[18px] leading-snug text-fg">
+          <p className="font-sans text-[18px] leading-snug text-fg">
             The model recommends exhibit No. {recommended}.
           </p>
         ) : null}

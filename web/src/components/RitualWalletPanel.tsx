@@ -65,9 +65,9 @@ export function RitualWalletPanel({
   ];
 
   return (
-    <div className="border border-line p-4">
+    <div className="rounded-xl border border-edge p-4">
       <div className="flex items-center justify-between gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+        <span className="text-[12px] text-muted">
           LLM fee preflight
         </span>
         {badge}
@@ -79,7 +79,7 @@ export function RitualWalletPanel({
             key={k}
             className="flex items-baseline justify-between gap-3 border-t border-line py-1.5"
           >
-            <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+            <dt className="text-[12px] text-faint">
               {k}
             </dt>
             <dd className="font-mono text-[12px] text-fg">{v}</dd>

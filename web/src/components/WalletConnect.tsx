@@ -44,7 +44,7 @@ export function WalletConnect() {
             Switch to {ritualChain.name} →
           </Button>
         ) : (
-          <span className="hidden font-mono text-[11px] uppercase tracking-[0.08em] text-muted sm:block">
+          <span className="hidden text-[12px] text-muted sm:block">
             {ritualChain.name} · {ritualChain.id}
           </span>
         )}
@@ -69,9 +69,9 @@ export function WalletConnect() {
         {isPending ? "Connecting" : "Connect wallet"}
       </Button>
       {open && (
-        <div className="absolute right-0 z-20 mt-2 w-52 border border-line2 bg-bg">
+        <div className="shadow-pop absolute right-0 z-20 mt-2 w-52 overflow-hidden rounded-xl border border-edge bg-surface p-1">
           {list.length === 0 && (
-            <div className="px-3 py-2 font-mono text-[11px] text-faint">
+            <div className="px-3 py-2 text-[13px] text-faint">
               No wallet connectors found.
             </div>
           )}
@@ -82,7 +82,7 @@ export function WalletConnect() {
                 connect({ connector });
                 setOpen(false);
               }}
-              className="block w-full px-3 py-2 text-left font-mono text-[12px] uppercase tracking-[0.08em] text-fg transition-colors hover:bg-fg/[0.06]"
+              className="block w-full rounded-lg px-3 py-2 text-left text-[14px] text-fg transition-colors hover:bg-surface-1"
             >
               {connector.name}
             </button>

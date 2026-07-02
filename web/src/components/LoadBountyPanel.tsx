@@ -54,7 +54,7 @@ export function LoadBountyPanel({
 
         {recentIds.length > 0 && (
           <div className="mt-6">
-            <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+            <div className="mb-2 text-[12px] text-muted">
               Viewed
             </div>
             <ul>

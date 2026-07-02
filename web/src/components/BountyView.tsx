@@ -26,10 +26,10 @@ function Section({
   return (
     <section className="border-t border-line pt-6">
       <div className="flex gap-4">
-        <span className="font-mono text-[11px] tracking-[0.08em] text-muted">
+        <span className="text-[12px] text-muted">
           {index}
         </span>
-        <h2 className="font-serif text-[21px] font-medium">{title}</h2>
+        <h2 className="font-sans text-[21px] font-medium">{title}</h2>
       </div>
       <div className="mt-4">{children}</div>
     </section>
@@ -68,7 +68,7 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
         </Notice>
         <button
           onClick={reload}
-          className="font-mono text-[12px] uppercase tracking-[0.08em] text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright"
+          className="font-mono text-[12px] text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright"
         >
           Retry →
         </button>
@@ -80,15 +80,15 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
   if (/^0x0+$/.test(bounty.owner)) {
     return (
       <div>
-        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+        <div className="text-[12px] text-muted">
           No such entry
         </div>
-        <p className="mt-2 font-serif text-[18px] text-fg">
+        <p className="mt-2 font-sans text-[18px] text-fg">
           Docket No. {bountyId.toString()} has not been filed.
         </p>
         <Link
           href="/"
-          className="mt-3 inline-block font-mono text-[12px] uppercase tracking-[0.08em] text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright"
+          className="mt-3 inline-block font-mono text-[12px] text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright"
         >
           ← Return to docket
         </Link>

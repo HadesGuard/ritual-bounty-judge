@@ -1,10 +1,9 @@
 "use client";
 
 /**
- * The wax seal, as a flat bold sticker: a scalloped wax rim, a thick outline,
- * a pressed "SV" monogram, a drip. The product's signature object — a
- * commitment is sealed, the reveal cracks it. Colors come from theme tokens so
- * it flips with light/dark.
+ * The wax seal — the product's signature mark. A commitment is a sealed answer;
+ * the reveal cracks it. Clean red wax with a pressed "SV" monogram; a `broken`
+ * variant for revealed submissions. Colors come from theme tokens.
  */
 
 function scallop(cx: number, cy: number, rOut: number, rIn: number, teeth: number) {
@@ -33,8 +32,6 @@ export function Seal({
   className?: string;
   title?: string;
 }) {
-  // Stroke scales up at small sizes so the outline stays punchy.
-  const sw = size < 40 ? 3.4 : 2.6;
   return (
     <svg
       viewBox="0 0 100 112"
@@ -47,40 +44,31 @@ export function Seal({
     >
       {title ? <title>{title}</title> : null}
       <path
-        d="M60 82 C63 95 60 104 54 104 C49 104 48 96 51 86 Z"
+        d="M59 82 C62 94 59 102 54 102 C50 102 49 95 51 86 Z"
         fill="var(--seal)"
-        stroke="var(--edge)"
-        strokeWidth={sw}
-        strokeLinejoin="round"
       />
-      <path
-        d={scallop(50, 50, 47, 41, 22)}
-        fill="var(--seal)"
-        stroke="var(--edge)"
-        strokeWidth={sw}
-        strokeLinejoin="round"
-      />
-      <circle cx="50" cy="50" r="33" fill="none" stroke="var(--edge)" strokeWidth={sw * 0.7} />
-      {size >= 40 && (
+      <path d={scallop(50, 50, 46, 41, 22)} fill="var(--seal)" />
+      <circle cx="50" cy="50" r="33" fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="1.4" />
+      {size >= 34 && (
         <text
           x="50"
-          y="63"
+          y="62"
           textAnchor="middle"
           fontFamily="Georgia, 'Times New Roman', serif"
           fontStyle="italic"
-          fontWeight="700"
-          fontSize="34"
-          fill="var(--edge)"
+          fontWeight="600"
+          fontSize="30"
+          fill="rgba(255,255,255,0.92)"
         >
           SV
         </text>
       )}
       {broken && (
         <path
-          d="M50 8 L45 30 L56 47 L44 64 L55 82 L49 100"
+          d="M50 9 L46 30 L55 47 L45 64 L54 82 L49 99"
           fill="none"
           stroke="var(--bg)"
-          strokeWidth={sw * 1.6}
+          strokeWidth="3"
           strokeLinejoin="round"
         />
       )}

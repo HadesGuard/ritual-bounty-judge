@@ -1,6 +1,7 @@
 "use client";
 
 import { useNow } from "@/hooks/useNow";
+import { Badge } from "@/components/ui";
 import {
   getBountyStatus,
   revealDeadline,
@@ -49,23 +50,23 @@ export function PhaseTimeline({ bounty }: { bounty: Bounty }) {
 
   function stateLine(i: number): { text: string; live?: boolean } {
     if (i === 0) {
-      if (current > 0) return { text: `CLOSED · ${formatTimestamp(bounty.deadline)}` };
-      return { text: `OPEN · ${countdown(bounty.deadline, now)}`, live: true };
+      if (current > 0) return { text: `Closed · ${formatTimestamp(bounty.deadline)}` };
+      return { text: `Open · ${countdown(bounty.deadline, now)}`, live: true };
     }
     if (i === 1) {
-      if (current > 1) return { text: `CLOSED · ${formatTimestamp(revealClose)}` };
-      if (current === 1) return { text: `OPEN · ${countdown(revealClose, now)}`, live: true };
-      return { text: "PENDING" };
+      if (current > 1) return { text: `Closed · ${formatTimestamp(revealClose)}` };
+      if (current === 1) return { text: `Open · ${countdown(revealClose, now)}`, live: true };
+      return { text: "Pending" };
     }
     if (i === 2) {
-      if (bounty.finalized) return { text: "ENTERED" };
-      if (bounty.judged) return { text: "RECOMMENDED" };
-      if (current === 2) return { text: "AWAITING" };
-      return { text: "PENDING" };
+      if (bounty.finalized) return { text: "Entered" };
+      if (bounty.judged) return { text: "Recommended" };
+      if (current === 2) return { text: "Awaiting" };
+      return { text: "Pending" };
     }
     // settlement
-    if (bounty.finalized) return { text: `SETTLED · No. ${bounty.winnerIndex.toString()}` };
-    return { text: "PENDING" };
+    if (bounty.finalized) return { text: `Settled · No. ${bounty.winnerIndex.toString()}` };
+    return { text: "Pending" };
   }
 
   return (
@@ -77,16 +78,16 @@ export function PhaseTimeline({ bounty }: { bounty: Bounty }) {
           return (
             <div
               key={label}
-              className={`border-t-2 pb-3 pt-2 ${reached ? "border-emerald" : "border-line"} ${
+              className={`border-t-2 pb-3 pt-2 ${reached ? "border-emerald" : "border-edge"} ${
                 i > 0 ? "sm:pl-4" : ""
-              } ${i > 0 ? "border-t sm:border-t-2" : ""}`}
+              }`}
             >
               <div className="flex items-baseline gap-2">
-                <span className="font-mono text-[11px] tracking-[0.08em] text-muted">
+                <span className="text-[12px] text-muted">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className={`font-mono text-[11px] uppercase tracking-[0.08em] ${
+                  className={`text-[12px] ${
                     reached ? "text-fg" : "text-faint"
                   }`}
                 >
@@ -105,13 +106,8 @@ export function PhaseTimeline({ bounty }: { bounty: Bounty }) {
         })}
       </div>
       {bounty.finalized ? (
-        <div className="mt-0">
-          <div className="rule-double" />
-          <div className="pt-2">
-            <span className="inline-flex items-center border border-fg bg-fg px-1.5 py-[3px] font-mono text-[11px] uppercase tracking-[0.08em] text-bg">
-              Judgment entered
-            </span>
-          </div>
+        <div className="mt-3">
+          <Badge tone="green">Judgment entered</Badge>
         </div>
       ) : null}
     </div>
