@@ -7,6 +7,7 @@ import { LoadBountyPanel } from "@/components/LoadBountyPanel";
 import { useRecentBounties } from "@/hooks/useRecentBounties";
 import { isContractConfigured } from "@/config/contract";
 import { Kicker, Notice } from "@/components/ui";
+import { Seal } from "@/components/Seal";
 
 const PROCEDURE = [
   {
@@ -50,33 +51,37 @@ export default function Home() {
   return (
     <main className="mx-auto max-w-[1120px] px-5 sm:px-10">
       {/* Opening statement */}
-      <section className="max-w-[720px] pb-16 pt-16">
-        <Kicker>Sealed-bid bounties, judged on chain</Kicker>
-        <h1 className="mt-3 font-serif text-[44px] font-medium leading-[1.06]">
-          Answers under seal. Verdicts on the record.
-        </h1>
-        <p className="mt-4 max-w-[68ch] text-[15px] leading-[1.6] text-muted">
-          Post a bounty with a rubric and an escrowed reward. Participants commit{" "}
-          <span className="font-mono text-[13px] text-fg">
-            keccak256(answer, salt, sender, id)
-          </span>{" "}
-          before the deadline and reveal after it. Ritual&rsquo;s on-chain model
-          scores every revealed answer. The owner enters judgment and the
-          contract pays the winner.
-        </p>
-        <div className="mt-6 flex items-center gap-5">
-          <a
-            href="#file"
-            className="inline-flex h-9 items-center rounded-[2px] bg-emerald px-4 font-mono text-[12px] uppercase tracking-[0.08em] text-on-accent transition-colors hover:bg-[#15583c]"
-          >
-            File a bounty →
-          </a>
-          <a
-            href="#procedure"
-            className="font-mono text-[12px] uppercase tracking-[0.08em] text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright"
-          >
-            Read the procedure →
-          </a>
+      <section className="grid grid-cols-1 items-start gap-10 pb-16 pt-16 lg:grid-cols-[1fr_auto]">
+        <div className="max-w-[640px]">
+          <Kicker>Sealed-bid bounties, judged on chain</Kicker>
+          <h1 className="mt-3 font-serif text-[44px] font-medium leading-[1.06]">
+            Answers under seal. Verdicts on the record.
+          </h1>
+          <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.65] text-muted">
+            Post a bounty, a rubric, and a reward held in escrow. Everyone locks
+            a sealed hash of their answer before the deadline, so nobody can read
+            the room and copy the best idea. After the deadline the seals come
+            off, a model on Ritual reads the whole batch, and you hand down the
+            verdict. The winner is paid by the contract, not by your good word.
+          </p>
+          <div className="mt-6 flex items-center gap-5">
+            <a
+              href="#file"
+              className="inline-flex h-9 items-center rounded-[2px] bg-emerald px-4 font-mono text-[12px] uppercase tracking-[0.08em] text-on-accent transition-transform duration-150 hover:-translate-y-0.5 hover:bg-[#15583c]"
+            >
+              File a bounty →
+            </a>
+            <a
+              href="#procedure"
+              className="font-mono text-[12px] uppercase tracking-[0.08em] text-emerald-bright underline decoration-emerald-bright/40 underline-offset-4 hover:decoration-emerald-bright"
+            >
+              Read the procedure →
+            </a>
+          </div>
+        </div>
+        {/* The signature: an oversized wax seal, tilted like a real impression */}
+        <div className="hidden shrink-0 pt-2 lg:block">
+          <Seal size={176} className="-rotate-[8deg]" title="SealedVerdict wax seal" />
         </div>
       </section>
 

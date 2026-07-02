@@ -7,6 +7,7 @@ import { ritualChain } from "@/config/wagmi";
 import { shortenAddress } from "@/lib/format";
 import type { JudgeResult } from "@/lib/aiReview";
 import { Badge, CopyText, SkeletonBar } from "@/components/ui";
+import { Seal } from "@/components/Seal";
 
 export function SubmissionsList({
   bountyId,
@@ -124,11 +125,17 @@ function SubmissionRow({
         )}
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
           {revealed === false ? (
-            <Badge tone="amber" className="rotate-[-1.5deg]">
-              Sealed
-            </Badge>
+            <>
+              <Seal size={18} title="sealed" />
+              <Badge tone="amber" className="rotate-[-1.5deg]">
+                Sealed
+              </Badge>
+            </>
           ) : revealed ? (
-            <Badge tone="zinc">Revealed</Badge>
+            <>
+              <Seal size={18} broken title="seal broken" />
+              <Badge tone="zinc">Revealed</Badge>
+            </>
           ) : null}
           {recommended ? <Badge tone="indigo">AI pick</Badge> : null}
           {isWinner ? <Badge tone="green">Judgment</Badge> : null}

@@ -36,6 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${newsreader.variable} ${schibsted.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col bg-bg text-fg">
