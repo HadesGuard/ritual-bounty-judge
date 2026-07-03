@@ -35,7 +35,7 @@ export function BountyRegistry({ onOpen }: { onOpen: (id: bigint) => void }) {
 
   const next = nextId ? Number(nextId) : 1;
   const ids: number[] = [];
-  for (let i = next - 1; i >= 1 && ids.length < 8; i--) ids.push(i);
+  for (let i = next - 1; i >= 1 && ids.length < 12; i--) ids.push(i);
 
   function submitSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -51,7 +51,7 @@ export function BountyRegistry({ onOpen }: { onOpen: (id: bigint) => void }) {
 
   return (
     <>
-      <div className="mb-4 mt-[48px] flex items-baseline justify-between">
+      <div className="mb-5 mt-[48px] flex items-baseline justify-between">
         <h2 className="m-0 text-[28px] font-medium tracking-[-0.01em]">Open bounties</h2>
         <form
           onSubmit={submitSearch}
@@ -67,36 +67,30 @@ export function BountyRegistry({ onOpen }: { onOpen: (id: bigint) => void }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by bounty ID…"
-            className="w-[260px] max-w-[46vw] bg-transparent py-2 pr-3.5 font-mono text-[12px] text-ink outline-none placeholder:text-muted"
+            className="w-[240px] max-w-[46vw] bg-transparent py-2 pr-3.5 font-mono text-[12px] text-ink outline-none placeholder:text-muted"
           />
         </form>
       </div>
 
-      <div className="overflow-hidden rounded-[14px] border border-line bg-surface">
-        <div className="grid grid-cols-[2.4fr_1fr_1fr_1.1fr_0.6fr] bg-panel font-mono text-[10px] uppercase tracking-[0.14em] text-indigo-soft">
-          <div className="px-[22px] py-[11px]">Bounty</div>
-          <div className="px-3 py-[11px]">Phase</div>
-          <div className="px-3 py-[11px]">Reward</div>
-          <div className="px-3 py-[11px]">Closes in</div>
-          <div className="px-[22px] py-[11px] text-right">Entries</div>
+      {ids.length === 0 ? (
+        <div className="rounded-[14px] border border-line bg-surface px-[22px] py-[52px] text-center">
+          <div className="text-[18px] font-semibold">No bounties yet</div>
+          <p className="mx-auto mt-1.5 max-w-[40ch] text-[13px] text-muted">
+            Post the first one. Every entry stays sealed until the deadline.
+          </p>
         </div>
-
-        {ids.length === 0 ? (
-          <div className="px-[22px] py-[46px] text-center">
-            <div className="text-[18px] font-semibold">No bounties yet</div>
-            <p className="mx-auto mt-1.5 max-w-[40ch] text-[13px] text-muted">
-              Post the first one. Every entry stays sealed until the deadline.
-            </p>
-          </div>
-        ) : (
-          ids.map((id) => <RegistryRow key={id} id={BigInt(id)} onOpen={onOpen} />)
-        )}
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {ids.map((id) => (
+            <BountyCard key={id} id={BigInt(id)} onOpen={onOpen} />
+          ))}
+        </div>
+      )}
     </>
   );
 }
 
-function RegistryRow({ id, onOpen }: { id: bigint; onOpen: (id: bigint) => void }) {
+function BountyCard({ id, onOpen }: { id: bigint; onOpen: (id: bigint) => void }) {
   const now = useNow();
   const { data } = useReadContract({
     address: contractAddress,
@@ -109,14 +103,10 @@ function RegistryRow({ id, onOpen }: { id: bigint; onOpen: (id: bigint) => void 
 
   if (!data) {
     return (
-      <div className="grid grid-cols-[2.4fr_1fr_1fr_1.1fr_0.6fr] border-t border-line">
-        <div className="px-[22px] py-4">
-          <span className="inline-block h-4 w-40 animate-pulse rounded bg-line" />
-        </div>
-        <div />
-        <div />
-        <div />
-        <div />
+      <div className="rounded-[14px] border border-line bg-surface p-5">
+        <span className="block h-4 w-24 animate-pulse rounded bg-line" />
+        <span className="mt-4 block h-6 w-3/4 animate-pulse rounded bg-line" />
+        <span className="mt-6 block h-8 w-1/3 animate-pulse rounded bg-line" />
       </div>
     );
   }
@@ -128,35 +118,52 @@ function RegistryRow({ id, onOpen }: { id: bigint; onOpen: (id: bigint) => void 
   const ph = PHASE[status];
   const closes =
     status === "open"
-      ? formatRelative(b.deadline)
+      ? `Closes in ${formatRelative(b.deadline)}`
       : status === "reveal"
-        ? formatRelative(revealDeadline(b))
-        : "—";
+        ? `Reveal in ${formatRelative(revealDeadline(b))}`
+        : status === "finalized"
+          ? "Settled"
+          : "Awaiting judgment";
 
   return (
     <button
       onClick={() => onOpen(id)}
-      className="grid w-full grid-cols-[2.4fr_1fr_1fr_1.1fr_0.6fr] border-t border-line text-left transition hover:bg-bg"
+      className="group flex flex-col rounded-[14px] border border-line bg-surface p-[22px] text-left transition hover:border-indigo-soft hover:shadow-[0_10px_28px_rgba(16,24,40,0.08)]"
     >
-      <div className="px-[22px] py-4">
-        <div className="mb-1 text-[18px] font-medium">{b.title || "Untitled"}</div>
-        <div className="font-mono text-[10.5px] tracking-[0.04em] text-muted">
-          Case №{id.toString()} · by {shortenAddress(b.owner)}
-        </div>
-      </div>
-      <div className="flex items-center px-3 py-4">
+      <div className="mb-3.5 flex items-center justify-between">
+        <span className="font-mono text-[11px] tracking-[0.06em] text-muted">
+          Case №{id.toString()}
+        </span>
         <span className={`px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.1em] ${ph.cls}`}>
-          {ph.label}
+          ● {ph.label}
         </span>
       </div>
-      <div className="flex items-center px-3 py-4 font-mono text-[14px] font-semibold text-green">
-        {formatReward(b.reward)}
+
+      <div className="mb-1 line-clamp-2 min-h-[52px] text-[21px] font-medium leading-[1.15]">
+        {b.title || "Untitled"}
       </div>
-      <div className="flex items-center px-3 py-4 font-mono text-[13px] text-text2">
-        {closes}
+      <div className="mb-5 font-mono text-[10.5px] text-muted">by {shortenAddress(b.owner)}</div>
+
+      <div className="mt-auto flex items-end justify-between">
+        <div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted">Reward</div>
+          <div className="mt-1 font-mono text-[26px] font-semibold leading-none text-green">
+            {formatReward(b.reward)}
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted">Entries</div>
+          <div className="mt-1 font-mono text-[26px] font-semibold leading-none">
+            {b.submissionCount.toString()}
+          </div>
+        </div>
       </div>
-      <div className="flex items-center justify-end px-[22px] py-4 font-mono text-[14px] font-semibold">
-        {b.submissionCount.toString()}
+
+      <div className="mt-5 flex items-center justify-between border-t border-line pt-3.5">
+        <span className="font-mono text-[11.5px] text-text2">{closes}</span>
+        <span className="font-mono text-[12px] font-medium text-indigo transition group-hover:translate-x-0.5">
+          Open →
+        </span>
       </div>
     </button>
   );
