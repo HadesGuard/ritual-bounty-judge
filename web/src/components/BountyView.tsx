@@ -48,8 +48,14 @@ function stepIndex(s: BountyStatus): number {
 export function BountyView({ bountyId }: { bountyId: bigint }) {
   const { address } = useAccount();
   const now = useNow();
-  const { bounty, isLoading, isError, refetch } = useBounty(bountyId);
+  const { bounty, isLoading, isError, error, refetch } = useBounty(bountyId);
   const reload = useCallback(() => void refetch(), [refetch]);
+
+  // A non-existent bounty reverts getBounty (bountyExists modifier). Treat that,
+  // and an all-zero owner, as the designed "not found" state.
+  const notFound =
+    (isError && /bounty not found|not\s*found/i.test(String(error?.message ?? ""))) ||
+    (!!bounty && /^0x0+$/.test(bounty.owner));
 
   if (isLoading) {
     return (
@@ -59,14 +65,7 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
       </div>
     );
   }
-  if (isError || !bounty) {
-    return (
-      <div className="rounded-[14px] border border-red-soft bg-red-tint px-5 py-4 text-[14px] text-wax">
-        Could not load bounty #{bountyId.toString()}. Check the id and RPC.
-      </div>
-    );
-  }
-  if (/^0x0+$/.test(bounty.owner)) {
+  if (notFound) {
     return (
       <div className="py-20 text-center">
         <div className="text-[120px] font-medium leading-none text-ink opacity-[0.13]">404</div>
@@ -81,6 +80,16 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
         >
           ← Back to bounties
         </Link>
+      </div>
+    );
+  }
+  if (isError || !bounty) {
+    return (
+      <div className="mt-6 flex flex-wrap items-center gap-3 rounded-[14px] border border-red-soft bg-red-tint px-5 py-4 text-[14px] text-wax">
+        Could not load bounty #{bountyId.toString()}. Check the id and RPC.
+        <button onClick={reload} className="font-mono text-[12px] text-wax underline">
+          retry
+        </button>
       </div>
     );
   }
