@@ -187,7 +187,7 @@ function CommitCard({
             <button
               type="submit"
               disabled={!isConnected || !answer.trim() || tx.isBusy}
-              className="rounded-[12px] border border-indigo-deep bg-indigo px-[26px] py-3.5 text-[14px] font-semibold text-[#f9fafb] shadow-[0_8px_22px_rgba(91,84,230,0.30)] disabled:opacity-50"
+              className="rounded-[12px] bg-green px-[26px] py-3.5 text-[14px] font-semibold text-on-accent shadow-[0_0_28px_rgba(53,208,127,0.3)] disabled:opacity-50"
             >
               {tx.isBusy ? "Sealing…" : "Submit commitment →"}
             </button>
@@ -312,7 +312,7 @@ function RevealCard({
             <button
               type="submit"
               disabled={!isConnected || !answer || !saltValid || tx.isBusy}
-              className="whitespace-nowrap rounded-[12px] bg-panel px-[26px] py-3.5 text-[14px] font-semibold text-indigo-tint2 shadow-[0_8px_22px_rgba(91,84,230,0.30)] disabled:opacity-50"
+              className="whitespace-nowrap rounded-[12px] bg-panel px-[26px] py-3.5 text-[14px] font-semibold text-indigo-tint2 shadow-[0_0_28px_rgba(53,208,127,0.3)] disabled:opacity-50"
             >
               {tx.isBusy ? "Revealing…" : "Verify & reveal →"}
             </button>

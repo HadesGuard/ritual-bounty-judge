@@ -13,7 +13,9 @@ export function Card({
   className?: string;
 }) {
   return (
-    <section className={`rounded-[14px] border border-line bg-surface ${className}`}>
+    <section
+      className={`rounded-[16px] border border-line bg-surface backdrop-blur-md ${className}`}
+    >
       {children}
     </section>
   );
@@ -35,7 +37,7 @@ export function CardHeader({
       <div className="flex min-w-0 items-baseline gap-3">
         {index ? <Mono className="text-muted">{index}</Mono> : null}
         <div className="min-w-0">
-          <h2 className="text-[22px] font-medium leading-tight tracking-[-0.01em] text-ink">
+          <h2 className="text-[22px] font-semibold leading-tight tracking-[-0.01em] text-ink">
             {title}
           </h2>
           {subtitle ? (
@@ -66,7 +68,7 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <div className={`rounded-[14px] border border-line bg-surface ${className}`}>
+    <div className={`rounded-[16px] border border-line bg-surface backdrop-blur-md ${className}`}>
       {children}
     </div>
   );
@@ -84,7 +86,7 @@ export function PanelHeader({
   return (
     <div className="mb-4 flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h3 className="text-[18px] font-medium leading-snug text-ink">{title}</h3>
+        <h3 className="text-[18px] font-semibold leading-snug text-ink">{title}</h3>
         {subtitle ? (
           <p className="mt-1 text-[13.5px] leading-normal text-text2">{subtitle}</p>
         ) : null}
@@ -103,9 +105,7 @@ export function Mono({
   className?: string;
 }) {
   return (
-    <span
-      className={`font-mono text-[10px] uppercase tracking-[0.16em] ${className}`}
-    >
+    <span className={`font-mono text-[10px] uppercase tracking-[0.16em] ${className}`}>
       {children}
     </span>
   );
@@ -117,11 +117,11 @@ export const Kicker = Mono;
 type Tone = "green" | "amber" | "indigo" | "zinc" | "red";
 
 const BADGE: Record<Tone, string> = {
-  indigo: "bg-indigo text-indigo-tint",
-  green: "bg-green text-green-tint",
-  amber: "bg-amber-tint text-amber-text border border-amber",
-  red: "bg-wax text-wax-tint",
-  zinc: "bg-line text-muted",
+  indigo: "bg-indigo-tint text-indigo-soft",
+  green: "bg-green-tint text-green-bright",
+  amber: "bg-amber-tint text-amber-text",
+  red: "bg-wax-tint text-wax",
+  zinc: "bg-white/[0.06] text-muted",
 };
 
 export function Badge({
@@ -135,7 +135,7 @@ export function Badge({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.1em] ${BADGE[tone]} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.1em] ${BADGE[tone]} ${className}`}
     >
       {children}
     </span>
@@ -158,14 +158,14 @@ export function Button({
     "inline-flex items-center justify-center gap-2 text-[14px] font-semibold transition disabled:cursor-not-allowed disabled:opacity-50";
   const styles: Record<string, string> = {
     primary:
-      "rounded-[12px] border border-indigo-deep bg-indigo px-6 py-3.5 text-white shadow-[0_6px_18px_rgba(16,24,40,0.10)] hover:brightness-[1.06]",
+      "rounded-full bg-green px-6 py-3.5 text-on-accent shadow-[0_0_28px_rgba(53,208,127,0.28)] hover:brightness-[1.08]",
     brand:
-      "rounded-[12px] border border-indigo-deep bg-indigo px-6 py-3.5 text-white shadow-[0_6px_18px_rgba(16,24,40,0.10)] hover:brightness-[1.06]",
-    dark: "rounded-[14px] bg-panel px-6 py-3.5 text-indigo-tint2 hover:brightness-125",
+      "rounded-full bg-green px-6 py-3.5 text-on-accent shadow-[0_0_28px_rgba(53,208,127,0.28)] hover:brightness-[1.08]",
     green:
-      "rounded-[12px] border border-green-deep bg-green px-6 py-3.5 text-green-tint hover:brightness-[1.06]",
+      "rounded-full bg-green px-6 py-3.5 text-on-accent shadow-[0_0_28px_rgba(53,208,127,0.28)] hover:brightness-[1.08]",
+    dark: "rounded-full border border-line bg-surface-2 px-6 py-3.5 text-ink backdrop-blur-md hover:bg-white/[0.1]",
     secondary:
-      "rounded-[14px] border border-line bg-surface px-6 py-3.5 text-ink shadow-[0_6px_18px_rgba(16,24,40,0.06)] hover:bg-bg",
+      "rounded-full border border-line bg-surface px-6 py-3.5 text-ink hover:bg-white/[0.08]",
     ghost: "font-mono text-[12px] text-muted hover:text-ink",
   };
   return (
@@ -198,15 +198,13 @@ export function Field({
 }
 
 const inputBase =
-  "w-full rounded-[14px] border border-line bg-surface px-4 py-3 text-[14px] text-ink outline-none placeholder:text-muted focus:border-indigo";
+  "w-full rounded-[12px] border border-line bg-surface px-4 py-3 text-[14px] text-ink outline-none placeholder:text-muted focus:border-green";
 
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`${inputBase} ${props.className ?? ""}`} />;
 }
 
-export function Textarea(
-  props: React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-) {
+export function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       {...props}
@@ -259,7 +257,7 @@ export function TxStatus({
           href={`${explorerBase}/tx/${hash}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-mono text-[12px] text-indigo hover:underline"
+          className="font-mono text-[12px] text-green hover:underline"
         >
           view tx ⧉
         </a>
@@ -282,11 +280,11 @@ export function Notice({
   children: ReactNode;
 }) {
   const styles: Record<Tone, string> = {
-    green: "bg-green-tint text-green-deep border-green",
-    amber: "bg-amber-tint text-amber-text2 border-amber",
-    red: "bg-red-tint text-wax border-red-soft",
-    zinc: "bg-bg text-text2 border-line",
-    indigo: "bg-indigo-tint text-indigo-deep border-indigo-soft",
+    green: "bg-green-tint text-green-bright border-green/40",
+    amber: "bg-amber-tint text-amber-text border-amber/40",
+    red: "bg-wax-tint text-wax border-red-soft",
+    zinc: "bg-white/[0.04] text-text2 border-line",
+    indigo: "bg-indigo-tint text-indigo-soft border-indigo/40",
   };
   return (
     <div className={`rounded-[12px] border px-4 py-3 text-[13px] leading-relaxed ${styles[tone]}`}>
@@ -328,7 +326,7 @@ export function CopyText({
           () => {},
         );
       }}
-      className={`font-mono text-indigo transition hover:brightness-110 ${className}`}
+      className={`font-mono text-green transition hover:brightness-110 ${className}`}
       title="Copy"
     >
       {copied ? "copied" : (display ?? value)} ⧉
@@ -337,7 +335,5 @@ export function CopyText({
 }
 
 export function SkeletonBar({ className = "" }: { className?: string }) {
-  return (
-    <span className={`inline-block animate-pulse rounded bg-line ${className}`} />
-  );
+  return <span className={`inline-block animate-pulse rounded bg-white/[0.08] ${className}`} />;
 }

@@ -36,31 +36,23 @@ export function WalletChip() {
       <div className="relative" ref={ref}>
         <button
           onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-[9px] rounded-[14px] border border-line bg-surface px-3 py-[7px]"
+          className="flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-2 backdrop-blur-md"
         >
-          <span
-            className={`h-[7px] w-[7px] rounded-full ${wrongNet ? "bg-wax" : "bg-green"}`}
-          />
-          <span className="leading-[1.1] text-left">
-            <span className="block font-mono text-[12px] font-medium">
-              {shortenAddress(address)}
-            </span>
-            <span
-              className={`mt-0.5 block font-mono text-[9px] uppercase tracking-[0.06em] ${wrongNet ? "text-wax" : "text-muted"}`}
-            >
-              {wrongNet ? "Wrong network" : ritualChain.name}
-            </span>
-          </span>
+          <span className={`h-[7px] w-[7px] rounded-full ${wrongNet ? "bg-wax" : "bg-green shadow-[0_0_8px_rgba(53,208,127,0.8)]"}`} />
+          <span className="font-mono text-[12.5px] font-medium">{shortenAddress(address)}</span>
         </button>
         {open && (
-          <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-[14px] border border-line bg-surface p-1 shadow-[0_30px_70px_rgba(16,24,40,0.22)]">
+          <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-[14px] border border-line bg-[#14161a] p-1 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+            <div className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
+              {wrongNet ? "Wrong network" : ritualChain.name}
+            </div>
             {wrongNet && (
               <button
                 onClick={() => {
                   switchChain({ chainId: ritualChain.id });
                   setOpen(false);
                 }}
-                className="block w-full rounded-[10px] px-3 py-2 text-left text-[13px] font-semibold text-indigo hover:bg-bg"
+                className="block w-full rounded-[10px] px-3 py-2 text-left text-[13px] font-semibold text-green hover:bg-white/[0.06]"
               >
                 Switch to {ritualChain.name}
               </button>
@@ -70,7 +62,7 @@ export function WalletChip() {
                 disconnect();
                 setOpen(false);
               }}
-              className="block w-full rounded-[10px] px-3 py-2 text-left font-mono text-[11px] text-muted hover:bg-bg"
+              className="block w-full rounded-[10px] px-3 py-2 text-left font-mono text-[11px] text-muted hover:bg-white/[0.06]"
             >
               disconnect wallet
             </button>
@@ -92,15 +84,13 @@ export function WalletChip() {
       <button
         onClick={() => setOpen((v) => !v)}
         disabled={isPending}
-        className="rounded-[14px] bg-panel px-4 py-[9px] text-[13px] font-semibold tracking-[0.02em] text-indigo-tint2"
+        className="rounded-full bg-white px-5 py-2.5 text-[13px] font-semibold text-[#0a0b0d] transition hover:brightness-95"
       >
-        {isPending ? "Connecting…" : "Connect wallet"}
+        {isPending ? "Connecting…" : "Connect Wallet"}
       </button>
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-72 overflow-hidden rounded-[14px] border border-line bg-surface p-3 shadow-[0_30px_70px_rgba(16,24,40,0.22)]">
-          <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
-            Wallet
-          </div>
+        <div className="absolute right-0 z-50 mt-2 w-72 overflow-hidden rounded-[16px] border border-line bg-[#14161a] p-3 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+          <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">Wallet</div>
           <div className="flex flex-col gap-2.5">
             {list.length === 0 && (
               <div className="font-mono text-[11px] text-muted">No connectors found.</div>
@@ -112,10 +102,10 @@ export function WalletChip() {
                   connect({ connector });
                   setOpen(false);
                 }}
-                className="flex items-center justify-between rounded-[14px] border border-line bg-surface px-4 py-3.5 hover:bg-bg"
+                className="flex items-center justify-between rounded-[12px] border border-line bg-white/[0.03] px-4 py-3.5 hover:bg-white/[0.07]"
               >
                 <span className="text-[14px] font-semibold">{connector.name}</span>
-                <span className="font-mono text-[11px] text-indigo">connect →</span>
+                <span className="font-mono text-[11px] text-green">connect →</span>
               </button>
             ))}
           </div>

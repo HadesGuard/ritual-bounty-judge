@@ -89,7 +89,7 @@ function Row({
       ? { label: "Revealed", cls: "bg-line text-text2" }
       : { label: "Sealed", cls: "bg-indigo text-indigo-tint" };
 
-  const rowBg = isWinner ? "bg-green-tint" : mine ? "bg-[#eef3fb]" : "bg-surface";
+  const rowBg = isWinner ? "bg-green-tint" : mine ? "bg-white/[0.05]" : "bg-surface";
 
   return (
     <div className={`border-b-[1.5px] border-line ${rowBg}`}>
@@ -120,7 +120,7 @@ function Row({
                 {answer}
               </div>
             ) : (
-              <div className="mt-3 flex max-w-[52ch] items-center gap-2.5 border border-dashed border-[#dcdafb] bg-indigo-tint px-3.5 py-2.5">
+              <div className="mt-3 flex max-w-[52ch] items-center gap-2.5 border border-dashed border-indigo/30 bg-indigo-tint px-3.5 py-2.5">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5b54e6" strokeWidth="2">
                   <rect x="4" y="10" width="16" height="11" rx="1" />
                   <path d="M8 10V7a4 4 0 0 1 8 0v3" />

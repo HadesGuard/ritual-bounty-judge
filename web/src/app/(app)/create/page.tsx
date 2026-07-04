@@ -277,7 +277,7 @@ export default function CreatePage() {
           <button
             onClick={fund}
             disabled={!canFund}
-            className="mt-4 rounded-[12px] border border-indigo-deep bg-indigo px-6 py-4 text-center text-[15px] font-semibold text-[#f9fafb] shadow-[0_8px_22px_rgba(91,84,230,0.30)] disabled:opacity-50"
+            className="mt-4 rounded-[12px] bg-green px-6 py-4 text-center text-[15px] font-semibold text-on-accent shadow-[0_0_28px_rgba(53,208,127,0.3)] disabled:opacity-50"
           >
             {tx.isBusy ? "Funding…" : "Fund & post bounty"}
           </button>

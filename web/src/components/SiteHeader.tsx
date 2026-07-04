@@ -4,13 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WalletChip } from "@/components/WalletConnect";
 
-export function SvMark({ size = 34 }: { size?: number }) {
+export function SvMark({ size = 32 }: { size?: number }) {
   return (
     <div
-      style={{ width: size, height: size, fontSize: size * 0.44 }}
-      className="flex items-center justify-center rounded-[12px] border border-indigo-deep bg-indigo font-semibold text-indigo-tint2 shadow-[inset_0_-3px_6px_rgba(0,0,0,0.28),inset_0_2px_4px_rgba(255,255,255,0.25)]"
+      style={{ width: size, height: size }}
+      className="flex items-center justify-center rounded-[10px] bg-green text-on-accent shadow-[0_0_18px_rgba(53,208,127,0.45)]"
     >
-      SV
+      <svg width={size * 0.56} height={size * 0.56} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+        <path d="M12 2l3 3-3 3-3-3 3-3zM12 16l3 3-3 3-3-3 3-3zM4 9l3 3-3 3-3-3 3-3zM20 9l3 3-3 3-3-3 3-3z" />
+      </svg>
     </div>
   );
 }
@@ -21,35 +23,27 @@ export function SiteHeader() {
 
   const navItem = (active: boolean) =>
     active
-      ? "px-4 h-full flex items-center text-[14px] font-semibold text-ink"
-      : "px-4 h-full flex items-center text-[14px] font-medium text-muted hover:text-ink";
+      ? "rounded-full bg-white/[0.08] px-4 py-2 text-[14px] font-semibold text-ink"
+      : "rounded-full px-4 py-2 text-[14px] font-medium text-muted hover:text-ink";
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-stretch justify-between border-b-[1.5px] border-line bg-surface">
-      <Link
-        href="/"
-        className="flex items-center gap-[13px] border-r-[1.5px] border-line px-[22px]"
-      >
-        <SvMark />
-        <div className="leading-none">
-          <div className="text-[19px] font-semibold tracking-[-0.01em]">SealedVerdict</div>
-          <div className="mt-[3px] font-mono text-[9px] uppercase tracking-[0.22em] text-muted">
-            Sealed contests · paid on-chain
-          </div>
-        </div>
-      </Link>
+    <header className="sticky top-0 z-40 px-4 pt-4">
+      <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 rounded-full border border-line bg-surface px-3 py-2.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-xl">
+        <Link href="/" className="flex items-center gap-2.5 pl-2">
+          <SvMark />
+          <span className="text-[18px] font-bold tracking-[-0.01em]">SealedVerdict</span>
+        </Link>
 
-      <div className="flex items-stretch">
-        <Link href="/" className={navItem(!onCreate)}>
-          Bounties
-        </Link>
-        <Link href="/create" className={navItem(!!onCreate)}>
-          Post a bounty
-        </Link>
-        <div className="my-3 w-[1.5px] rounded bg-ink" />
-        <div className="flex items-center px-4">
-          <WalletChip />
+        <div className="flex items-center gap-1">
+          <Link href="/" className={navItem(!onCreate)}>
+            Bounties
+          </Link>
+          <Link href="/create" className={navItem(!!onCreate)}>
+            Post a bounty
+          </Link>
         </div>
+
+        <WalletChip />
       </div>
     </header>
   );

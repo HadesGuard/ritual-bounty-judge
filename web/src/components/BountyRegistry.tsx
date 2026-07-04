@@ -14,15 +14,23 @@ import {
 import { formatReward, formatRelative, shortenAddress } from "@/lib/format";
 import { useNow } from "@/hooks/useNow";
 
-const PHASE: Record<BountyStatus, { label: string; cls: string }> = {
-  open: { label: "Sealing", cls: "bg-indigo text-indigo-tint" },
-  reveal: { label: "Reveal", cls: "bg-green text-green-tint" },
-  ready: { label: "Judging", cls: "bg-amber-tint text-amber-text border border-amber" },
-  judged: { label: "Judging", cls: "bg-amber-tint text-amber-text border border-amber" },
-  finalized: { label: "Settled", cls: "bg-line text-text2" },
+export type RegistryFilter = "all" | "open" | "reveal" | "finalized";
+
+const PHASE: Record<BountyStatus, { label: string; cls: string; dot: string }> = {
+  open: { label: "Sealing", cls: "bg-indigo-tint text-indigo-soft", dot: "bg-indigo-soft" },
+  reveal: { label: "Reveal", cls: "bg-green-tint text-green-bright", dot: "bg-green" },
+  ready: { label: "Judging", cls: "bg-amber-tint text-amber-text", dot: "bg-amber" },
+  judged: { label: "Judging", cls: "bg-amber-tint text-amber-text", dot: "bg-amber" },
+  finalized: { label: "Settled", cls: "bg-white/[0.06] text-muted", dot: "bg-muted" },
 };
 
-export function BountyRegistry({ onOpen }: { onOpen: (id: bigint) => void }) {
+export function BountyRegistry({
+  filter = "all",
+  onOpen,
+}: {
+  filter?: RegistryFilter;
+  onOpen: (id: bigint) => void;
+}) {
   const [query, setQuery] = useState("");
 
   const { data: nextId } = useReadContract({
@@ -45,44 +53,41 @@ export function BountyRegistry({ onOpen }: { onOpen: (id: bigint) => void }) {
       const id = BigInt(t);
       if (id >= 0n) onOpen(id);
     } catch {
-      /* ignore non-numeric */
+      /* ignore */
     }
   }
 
   return (
     <>
-      <div className="mb-5 mt-[48px] flex items-baseline justify-between">
-        <h2 className="m-0 text-[28px] font-medium tracking-[-0.01em]">Open bounties</h2>
-        <form
-          onSubmit={submitSearch}
-          className="flex items-center rounded-[14px] border border-line bg-surface"
-        >
-          <span className="flex items-center px-3 py-2 text-muted">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="7" />
-              <path d="M21 21l-4-4" />
-            </svg>
-          </span>
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by bounty ID…"
-            className="w-[240px] max-w-[46vw] bg-transparent py-2 pr-3.5 font-mono text-[12px] text-ink outline-none placeholder:text-muted"
-          />
-        </form>
-      </div>
+      <form
+        onSubmit={submitSearch}
+        className="mb-4 flex items-center rounded-full border border-line bg-surface"
+      >
+        <span className="flex items-center px-4 py-2.5 text-muted">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4-4" />
+          </svg>
+        </span>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by bounty ID…"
+          className="flex-1 bg-transparent py-2.5 pr-4 font-mono text-[12.5px] text-ink outline-none placeholder:text-muted"
+        />
+      </form>
 
       {ids.length === 0 ? (
-        <div className="rounded-[14px] border border-line bg-surface px-[22px] py-[52px] text-center">
+        <div className="rounded-[16px] border border-line bg-surface px-6 py-[52px] text-center backdrop-blur-md">
           <div className="text-[18px] font-semibold">No bounties yet</div>
           <p className="mx-auto mt-1.5 max-w-[40ch] text-[13px] text-muted">
             Post the first one. Every entry stays sealed until the deadline.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {ids.map((id) => (
-            <BountyCard key={id} id={BigInt(id)} onOpen={onOpen} />
+            <BountyCard key={id} id={BigInt(id)} filter={filter} onOpen={onOpen} />
           ))}
         </div>
       )}
@@ -90,7 +95,15 @@ export function BountyRegistry({ onOpen }: { onOpen: (id: bigint) => void }) {
   );
 }
 
-function BountyCard({ id, onOpen }: { id: bigint; onOpen: (id: bigint) => void }) {
+function BountyCard({
+  id,
+  filter,
+  onOpen,
+}: {
+  id: bigint;
+  filter: RegistryFilter;
+  onOpen: (id: bigint) => void;
+}) {
   const now = useNow();
   const { data } = useReadContract({
     address: contractAddress,
@@ -103,10 +116,10 @@ function BountyCard({ id, onOpen }: { id: bigint; onOpen: (id: bigint) => void }
 
   if (!data) {
     return (
-      <div className="rounded-[14px] border border-line bg-surface p-5">
-        <span className="block h-4 w-24 animate-pulse rounded bg-line" />
-        <span className="mt-4 block h-6 w-3/4 animate-pulse rounded bg-line" />
-        <span className="mt-6 block h-8 w-1/3 animate-pulse rounded bg-line" />
+      <div className="rounded-[16px] border border-line bg-surface p-5 backdrop-blur-md">
+        <span className="block h-4 w-24 animate-pulse rounded bg-white/[0.08]" />
+        <span className="mt-4 block h-6 w-3/4 animate-pulse rounded bg-white/[0.08]" />
+        <span className="mt-6 block h-8 w-1/3 animate-pulse rounded bg-white/[0.08]" />
       </div>
     );
   }
@@ -115,6 +128,8 @@ function BountyCard({ id, onOpen }: { id: bigint; onOpen: (id: bigint) => void }
   if (/^0x0+$/.test(b.owner)) return null;
 
   const status = getBountyStatus(b, now / 1000);
+  if (filter !== "all" && status !== filter) return null;
+
   const ph = PHASE[status];
   const closes =
     status === "open"
@@ -124,46 +139,44 @@ function BountyCard({ id, onOpen }: { id: bigint; onOpen: (id: bigint) => void }
         : status === "finalized"
           ? "Settled"
           : "Awaiting judgment";
+  const entries = Number(b.submissionCount);
+  const fill = Math.max(4, Math.min(100, (entries / 10) * 100));
 
   return (
     <button
       onClick={() => onOpen(id)}
-      className="group flex flex-col rounded-[14px] border border-line bg-surface p-[22px] text-left transition hover:border-indigo-soft hover:shadow-[0_10px_28px_rgba(16,24,40,0.08)]"
+      className="group flex flex-col rounded-[16px] border border-line bg-surface p-5 text-left backdrop-blur-md transition hover:border-green/40 hover:shadow-[0_0_30px_rgba(53,208,127,0.12)]"
     >
       <div className="mb-3.5 flex items-center justify-between">
-        <span className="font-mono text-[11px] tracking-[0.06em] text-muted">
-          Case №{id.toString()}
-        </span>
-        <span className={`px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.1em] ${ph.cls}`}>
-          ● {ph.label}
+        <span className="font-mono text-[11px] tracking-[0.06em] text-muted">Case №{id.toString()}</span>
+        <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.1em] ${ph.cls}`}>
+          <span className={`h-1.5 w-1.5 rounded-full ${ph.dot}`} />
+          {ph.label}
         </span>
       </div>
 
-      <div className="mb-1 line-clamp-2 min-h-[52px] text-[21px] font-medium leading-[1.15]">
+      <div className="mb-1 line-clamp-2 min-h-[52px] text-[20px] font-semibold leading-[1.15]">
         {b.title || "Untitled"}
       </div>
-      <div className="mb-5 font-mono text-[10.5px] text-muted">by {shortenAddress(b.owner)}</div>
+      <div className="mb-4 font-mono text-[10.5px] text-muted">by {shortenAddress(b.owner)}</div>
+
+      {/* entries fill bar */}
+      <div className="mb-4">
+        <div className="mb-1.5 flex items-center justify-between font-mono text-[10px] text-muted">
+          <span>{entries} / 10 entries</span>
+          <span>{closes}</span>
+        </div>
+        <div className="h-[6px] overflow-hidden rounded-full bg-white/[0.07]">
+          <div className="h-full rounded-full bg-green shadow-[0_0_10px_rgba(53,208,127,0.6)]" style={{ width: `${fill}%` }} />
+        </div>
+      </div>
 
       <div className="mt-auto flex items-end justify-between">
         <div>
           <div className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted">Reward</div>
-          <div className="mt-1 font-mono text-[26px] font-semibold leading-none text-green">
-            {formatReward(b.reward)}
-          </div>
+          <div className="mt-1 font-mono text-[24px] font-bold leading-none text-green">{formatReward(b.reward)}</div>
         </div>
-        <div className="text-right">
-          <div className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted">Entries</div>
-          <div className="mt-1 font-mono text-[26px] font-semibold leading-none">
-            {b.submissionCount.toString()}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-5 flex items-center justify-between border-t border-line pt-3.5">
-        <span className="font-mono text-[11.5px] text-text2">{closes}</span>
-        <span className="font-mono text-[12px] font-medium text-indigo transition group-hover:translate-x-0.5">
-          Open →
-        </span>
+        <span className="font-mono text-[12px] font-medium text-green transition group-hover:translate-x-0.5">Open →</span>
       </div>
     </button>
   );

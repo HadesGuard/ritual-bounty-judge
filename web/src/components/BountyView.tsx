@@ -309,7 +309,7 @@ function OwnerControls({
       </div>
       <div className="flex flex-col gap-2.5 px-5 py-4">
         {status === "open" || status === "reveal" ? (
-          <div className="border-[1.5px] border-dashed border-[#2c3140] px-3 py-3 text-center font-mono text-[11px] text-muted">
+          <div className="border-[1.5px] border-dashed border-line px-3 py-3 text-center font-mono text-[11px] text-muted">
             Judging unlocks after the reveal window
           </div>
         ) : null}
@@ -317,7 +317,7 @@ function OwnerControls({
           <button
             onClick={reclaim}
             disabled={tx.isBusy}
-            className="border-[1.5px] border-[#3a2f45] px-3 py-2.5 text-center text-[12px] font-medium text-[#b8748a] disabled:opacity-50"
+            className="border-[1.5px] border-wax/30 px-3 py-2.5 text-center text-[12px] font-medium text-wax disabled:opacity-50"
           >
             {tx.isBusy ? "…" : "Reclaim prize (no reveals)"}
           </button>

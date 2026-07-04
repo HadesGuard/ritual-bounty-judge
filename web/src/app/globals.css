@@ -1,48 +1,51 @@
 @import "tailwindcss";
 
 /*
-  SealedVerdict — implementation of the designer's SealedVerdict.dc.html.
-  Single light theme: #f6f7f9 canvas, white cards, #ebedf1 hairlines, indigo
-  #5b54e6 primary, dark #171922 panels, green rewards, IBM Plex Mono for data,
-  Plus Jakarta Sans for everything else.
+  SealedVerdict — HIVEMIND-style dark glass theme. Near-black canvas with a
+  green/violet aurora glow, translucent glass cards, neon-green accent, violet
+  as the secondary (sealed) accent, Plus Jakarta Sans + IBM Plex Mono.
+  Surfaces are translucent (rgba white) so every `bg-surface` reads as glass.
 */
 
 @theme inline {
-  --color-bg: #f6f7f9;
-  --color-surface: #ffffff;
-  --color-ink: #191b22;
-  --color-panel: #171922;
-  --color-panel-line: #262a35;
-  --color-line: #ebedf1;
-  --color-text2: #475467;
-  --color-text3: #344054;
-  --color-muted: #8a94a6;
+  --color-bg: #0a0b0d;
+  --color-surface: rgba(255, 255, 255, 0.035);
+  --color-surface-2: rgba(255, 255, 255, 0.06);
+  --color-panel: rgba(255, 255, 255, 0.05);
+  --color-panel-line: rgba(255, 255, 255, 0.08);
+  --color-line: rgba(255, 255, 255, 0.09);
 
-  --color-indigo: #5b54e6;
-  --color-indigo-deep: #4840c4;
-  --color-indigo-deeper: #3a33a8;
-  --color-indigo-soft: #a5a1f2;
-  --color-indigo-tint: #efeefc;
-  --color-indigo-tint2: #ecebfb;
+  --color-ink: #e9ebee;
+  --color-text2: #aeb4bc;
+  --color-text3: #c6ccd3;
+  --color-muted: #7d838b;
 
-  --color-green: #12946a;
-  --color-green-deep: #0e7a57;
-  --color-green-tint: #e7f8f0;
-  --color-green-bright: #34d399;
+  --color-green: #35d07f;
+  --color-green-deep: #1f9e5d;
+  --color-green-tint: rgba(53, 208, 127, 0.14);
+  --color-green-bright: #4ade80;
 
-  --color-wax: #c0392b;
-  --color-wax-deep: #7c1f16;
-  --color-wax-tint: #fbeae7;
-  --color-red-tint: #fef3f2;
-  --color-red-soft: #fda29b;
+  --color-indigo: #8b88f2;
+  --color-indigo-deep: #6c68e0;
+  --color-indigo-deeper: #5a56d6;
+  --color-indigo-soft: #b3b0f7;
+  --color-indigo-tint: rgba(139, 136, 242, 0.14);
+  --color-indigo-tint2: #d7d5fb;
 
   --color-amber: #f5c84b;
-  --color-amber-text: #b7791f;
-  --color-amber-text2: #8a6d1e;
-  --color-amber-tint: #fffaed;
+  --color-amber-text: #f0b429;
+  --color-amber-text2: #e6a817;
+  --color-amber-tint: rgba(245, 200, 75, 0.12);
 
-  --color-on-panel: #ebedf1;
-  --color-on-panel-soft: #f6f7f9;
+  --color-wax: #f0705f;
+  --color-wax-deep: #b3402f;
+  --color-wax-tint: rgba(240, 112, 95, 0.12);
+  --color-red-tint: rgba(240, 112, 95, 0.1);
+  --color-red-soft: rgba(240, 112, 95, 0.4);
+
+  --color-on-panel: #d5d9df;
+  --color-on-panel-soft: #eef0f3;
+  --color-on-accent: #06180f;
 
   --font-sans: var(--font-jakarta);
   --font-display: var(--font-jakarta);
@@ -58,56 +61,50 @@ body {
   padding: 0;
 }
 body {
-  background: #f6f7f9;
-  color: #191b22;
+  position: relative;
+  min-height: 100vh;
+  background: #0a0b0d;
+  color: #e9ebee;
   font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+/* ambient aurora glow */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 42% at 72% -8%, rgba(53, 208, 127, 0.16), transparent 62%),
+    radial-gradient(46% 40% at 12% 4%, rgba(139, 136, 242, 0.12), transparent 60%),
+    radial-gradient(40% 30% at 90% 30%, rgba(53, 208, 127, 0.06), transparent 60%);
+}
 ::selection {
-  background: #5b54e6;
-  color: #f9fafb;
+  background: #35d07f;
+  color: #06180f;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 @keyframes sv-fade-up {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes sv-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes sv-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sv-seal-crack {
   0% { transform: scale(1) rotate(0deg); opacity: 1; }
   18% { transform: scale(1.09) rotate(-3deg); }
   38% { transform: scale(1.04) rotate(2deg); }
   100% { transform: scale(1.7) rotate(9deg); opacity: 0; }
 }
-@keyframes sv-shard-l {
-  0% { transform: translate(0, 0) rotate(0); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translate(-90px, 64px) rotate(-46deg); opacity: 0; }
-}
-@keyframes sv-shard-r {
-  0% { transform: translate(0, 0) rotate(0); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translate(94px, 58px) rotate(52deg); opacity: 0; }
-}
-@keyframes sv-doc-rise {
-  0% { transform: translateY(30px) scale(0.96); opacity: 0; filter: blur(6px); }
-  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
-}
-@keyframes sv-spin {
-  to { transform: rotate(360deg); }
-}
-@keyframes sv-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-@keyframes sv-tick {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.15; }
-}
+@keyframes sv-spin { to { transform: rotate(360deg); } }
+@keyframes sv-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes sv-tick { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
 
 .sv-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
-.sv-scroll::-webkit-scrollbar-thumb { background: #ebedf1; border-radius: 0; }
-.sv-scroll::-webkit-scrollbar-track { background: #ebedf1; }
+.sv-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 999px; }

@@ -102,7 +102,7 @@ export function JudgeAll({
           <button
             onClick={handleJudge}
             disabled={busy || !fundingReady}
-            className="whitespace-nowrap rounded-[12px] border border-indigo-deeper bg-indigo px-7 py-4 text-[14px] font-semibold text-[#f9fafb] shadow-[0_6px_18px_rgba(16,24,40,0.10)] disabled:opacity-50"
+            className="whitespace-nowrap rounded-[12px] bg-green px-7 py-4 text-[14px] font-semibold text-on-accent shadow-[0_0_28px_rgba(53,208,127,0.3)] disabled:opacity-50"
           >
             {gathering ? (
               <span className="inline-flex items-center gap-2">
