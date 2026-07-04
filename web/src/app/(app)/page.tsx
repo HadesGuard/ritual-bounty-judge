@@ -130,6 +130,28 @@ export default function Home() {
           </div>
         ))}
       </div>
+
+      {/* ADVANCED TRACK */}
+      <Link
+        href="/advanced"
+        className="group mt-4 flex flex-wrap items-center justify-between gap-4 rounded-[16px] border border-indigo/40 bg-indigo-tint px-6 py-5 backdrop-blur-md transition hover:border-indigo-soft"
+      >
+        <div className="min-w-0">
+          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-indigo-soft">
+            Advanced track
+          </div>
+          <div className="mt-1 text-[17px] font-semibold">
+            Ritual TEE: answers stay encrypted, even on-chain
+          </div>
+          <p className="mt-1 max-w-[64ch] text-[13.5px] leading-[1.55] text-text2">
+            Skip the reveal step entirely. Entrants encrypt to the enclave, the model judges inside
+            the TEE, and only a signed winner comes back. Watch the attestation run live.
+          </p>
+        </div>
+        <span className="shrink-0 font-mono text-[13px] text-indigo-soft group-hover:underline">
+          Explore →
+        </span>
+      </Link>
     </main>
   );
 }

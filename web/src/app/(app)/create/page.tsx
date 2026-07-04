@@ -28,7 +28,6 @@ export default function CreatePage() {
   const [rubric, setRubric] = useState("");
   const [deadline, setDeadline] = useState(defaultDeadline());
   const [reward, setReward] = useState("");
-  const [mode, setMode] = useState<"commit" | "tee">("commit");
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const tx = useWriteTx((receipt) => {
@@ -89,29 +88,6 @@ export default function CreatePage() {
 
   const rewardLabel = reward.trim() === "" ? "0.00" : reward.trim();
   const canFund = isConnected && isContractConfigured && !validation && !tx.isBusy;
-
-  const modeCard = (
-    active: boolean,
-    onClick: () => void,
-    title: string,
-    tag: string,
-    tagCls: string,
-    body: string,
-  ) => (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`rounded-[14px] border p-4 text-left transition ${active ? "border-indigo bg-indigo-tint" : "border-line bg-surface hover:border-indigo-soft"}`}
-    >
-      <div className="mb-2 flex items-center justify-between">
-        <span className="text-[14px] font-bold">{title}</span>
-        <span className={`rounded-full px-2 py-[3px] font-mono text-[9px] tracking-[0.1em] ${tagCls}`}>
-          {tag}
-        </span>
-      </div>
-      <div className="text-[12px] leading-[1.5] text-text2">{body}</div>
-    </button>
-  );
 
   const labelCls = "mb-2.5 block font-mono text-[10px] uppercase tracking-[0.16em] text-muted";
   const lineInput =
@@ -193,22 +169,35 @@ export default function CreatePage() {
           <div>
             <div className={labelCls}>06 · How answers stay hidden</div>
             <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-              {modeCard(
-                mode === "commit",
-                () => setMode("commit"),
-                "Commit-Reveal",
-                "ANY EVM",
-                "bg-bg text-text2",
-                "Entrants post a hash now, then reveal their answer + salt after the deadline. The contract checks it matches.",
-              )}
-              {modeCard(
-                mode === "tee",
-                () => setMode("tee"),
-                "Ritual TEE",
-                "PRIVATE",
-                "bg-indigo-tint text-indigo-deep",
-                "Answers are encrypted and never made public. The AI reads them inside a TEE; only the winner and a hashed bundle are published.",
-              )}
+              <div className="rounded-[14px] border border-green/50 bg-green-tint p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-[14px] font-bold">Commit-Reveal</span>
+                  <span className="rounded-full bg-green px-2 py-[3px] font-mono text-[9px] tracking-[0.1em] text-on-accent">
+                    THIS DEPLOYMENT
+                  </span>
+                </div>
+                <div className="text-[12px] leading-[1.5] text-text2">
+                  Entrants post a hash now, then reveal their answer and salt after the deadline. The
+                  contract checks it matches. This is the live mode.
+                </div>
+              </div>
+              <Link
+                href="/advanced"
+                className="group rounded-[14px] border border-line bg-surface p-4 transition hover:border-indigo-soft"
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-[14px] font-bold">Ritual TEE</span>
+                  <span className="rounded-full bg-indigo-tint px-2 py-[3px] font-mono text-[9px] tracking-[0.1em] text-indigo-soft">
+                    ADVANCED TRACK
+                  </span>
+                </div>
+                <div className="text-[12px] leading-[1.5] text-text2">
+                  Answers are encrypted to the enclave and never made public. Judged inside a TEE.
+                </div>
+                <div className="mt-2 font-mono text-[11px] text-indigo-soft group-hover:underline">
+                  How it works →
+                </div>
+              </Link>
             </div>
           </div>
 
@@ -257,7 +246,7 @@ export default function CreatePage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted">Privacy</span>
-                <span className="font-mono">{mode === "tee" ? "Ritual TEE" : "Commit-Reveal"}</span>
+                <span className="font-mono">Commit-Reveal</span>
               </div>
             </div>
           </div>
