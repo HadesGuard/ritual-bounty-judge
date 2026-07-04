@@ -133,7 +133,7 @@ export default function CreatePage() {
         {/* FORM */}
         <div className="flex flex-col gap-[34px] border-r-[1.5px] border-line px-[42px] py-10">
           <div>
-            <div className={labelCls}>01 — Title of the challenge</div>
+            <div className={labelCls}>01 · Title of the challenge</div>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -144,7 +144,7 @@ export default function CreatePage() {
           </div>
 
           <div>
-            <div className={labelCls}>02 — The rubric · how entries are scored</div>
+            <div className={labelCls}>02 · The rubric · how entries are scored</div>
             <textarea
               value={rubric}
               onChange={(e) => setRubric(e.target.value)}
@@ -161,7 +161,7 @@ export default function CreatePage() {
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-[0.8fr_1fr_1fr]">
             <div>
-              <div className={labelCls}>03 — Reward (RITUAL)</div>
+              <div className={labelCls}>03 · Reward (RITUAL)</div>
               <div className="flex items-center border-b-[1.5px] border-line">
                 <span className="pr-2 font-mono text-[16px] text-green">◇</span>
                 <input
@@ -174,7 +174,7 @@ export default function CreatePage() {
               </div>
             </div>
             <div>
-              <div className={labelCls}>04 — Submission deadline</div>
+              <div className={labelCls}>04 · Submission deadline</div>
               <input
                 type="datetime-local"
                 value={deadline}
@@ -183,7 +183,7 @@ export default function CreatePage() {
               />
             </div>
             <div>
-              <div className={labelCls}>05 — Reveal window</div>
+              <div className={labelCls}>05 · Reveal window</div>
               <div className="border-b-[1.5px] border-line pb-3 pt-[11px] font-mono text-[14px] text-muted">
                 +24 hours (fixed)
               </div>
@@ -191,12 +191,12 @@ export default function CreatePage() {
           </div>
 
           <div>
-            <div className={labelCls}>06 — How answers stay hidden</div>
+            <div className={labelCls}>06 · How answers stay hidden</div>
             <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
               {modeCard(
                 mode === "commit",
                 () => setMode("commit"),
-                "Commit–Reveal",
+                "Commit-Reveal",
                 "ANY EVM",
                 "bg-bg text-text2",
                 "Entrants post a hash now, then reveal their answer + salt after the deadline. The contract checks it matches.",
@@ -234,7 +234,7 @@ export default function CreatePage() {
               Draft
             </div>
             <div className="border-b-[1.5px] border-dashed border-line px-[22px] pb-[18px] pt-[22px]">
-              <div className="mb-2 font-mono text-[10px] text-muted">Case №0x—— · unfiled</div>
+              <div className="mb-2 font-mono text-[10px] text-muted">Case №0x… · unfiled</div>
               <div className="min-h-[52px] text-[22px] font-medium leading-[1.15]">
                 {title || "Your challenge title appears here."}
               </div>
@@ -248,7 +248,7 @@ export default function CreatePage() {
               <div className="flex justify-between">
                 <span className="text-muted">Reveal closes</span>
                 <span className="font-mono">
-                  {deadlineSec ? formatTimestamp(deadlineSec + REVEAL_WINDOW_SECONDS) : "—"}
+                  {deadlineSec ? formatTimestamp(deadlineSec + REVEAL_WINDOW_SECONDS) : "not set"}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -257,7 +257,7 @@ export default function CreatePage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted">Privacy</span>
-                <span className="font-mono">{mode === "tee" ? "Ritual TEE" : "Commit–Reveal"}</span>
+                <span className="font-mono">{mode === "tee" ? "Ritual TEE" : "Commit-Reveal"}</span>
               </div>
             </div>
           </div>

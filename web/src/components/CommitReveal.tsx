@@ -146,7 +146,7 @@ function CommitCard({
                 <path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
               </svg>
               <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-amber-text">
-                Save your salt — you need it to reveal
+                Save your salt, you need it to reveal
               </span>
             </div>
             <div className="flex flex-col gap-2.5">
@@ -174,7 +174,7 @@ function CommitCard({
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             rows={5}
-            placeholder="Write your answer. It is hashed on your device and only the hash is sent on-chain — the text stays with you until you reveal after the deadline."
+            placeholder="Write your answer. It is hashed on your device and only the hash is sent on-chain. The text stays with you until you reveal after the deadline."
             className="w-full resize-y rounded-[14px] border border-line bg-surface px-4 py-3.5 text-[14.5px] leading-[1.6] outline-none focus:border-indigo"
           />
           <div className="mt-4 flex flex-wrap items-center justify-between gap-4">

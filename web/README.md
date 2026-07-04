@@ -79,7 +79,7 @@ src/
     useWriteTx.ts          idle -> wallet -> pending -> confirmed | failed tx state
     useRecentBounties.ts   localStorage list of created/opened bounty ids
   lib/
-    ritualLlm.ts           buildJudgeAllLlmInput() — Ritual LLM request encoder
+    ritualLlm.ts           buildJudgeAllLlmInput() Ritual LLM request encoder
     aiReview.ts            Decode aiReview bytes + parse judge JSON
     bounty.ts              Bounty type, status logic, submission gating
     format.ts              Address/amount/timestamp formatting helpers
@@ -115,5 +115,5 @@ finalize input is prefilled with the AI's recommended `winnerIndex`.
 - Transaction buttons show clear states and disable while pending.
 - Owner-only actions (Judge / Finalize) only appear for the connected owner.
 - The "recent bounties" list is kept in `localStorage` (no indexer required).
-- Multicall is **not** assumed — submissions are read one-by-one, so it works on
+- Multicall is **not** assumed. Submissions are read one-by-one, so it works on
   a fresh chain without a deployed multicall contract.

@@ -45,7 +45,7 @@ export function saveCommitment(
   try {
     localStorage.setItem(storageKey(contract, bountyId, account), JSON.stringify(value));
   } catch {
-    /* storage full or blocked — reveal will need manual salt entry */
+    /* storage full or blocked, reveal will need manual salt entry */
   }
 }
 

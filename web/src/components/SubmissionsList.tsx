@@ -126,7 +126,7 @@ function Row({
                   <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                 </svg>
                 <span className="font-mono text-[12.5px] text-indigo-deep">
-                  Sealed — contents hidden until reveal
+                  Sealed · contents hidden until reveal
                 </span>
               </div>
             )}

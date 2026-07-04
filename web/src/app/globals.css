@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
-  SealedVerdict — HIVEMIND-style dark glass theme. Near-black canvas with a
+  SealedVerdict. HIVEMIND-style dark glass theme. Near-black canvas with a
   green/violet aurora glow, translucent glass cards, neon-green accent, violet
   as the secondary (sealed) accent, Plus Jakarta Sans + IBM Plex Mono.
   Surfaces are translucent (rgba white) so every `bg-surface` reads as glass.

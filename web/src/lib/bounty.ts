@@ -17,7 +17,7 @@ export type Bounty = {
   aiReview: `0x${string}`;
 };
 
-/** getBounty returns a positional tuple — map it to a named object. */
+/** getBounty returns a positional tuple, mapped to a named object. */
 export function parseBounty(
   raw: readonly [
     Address,

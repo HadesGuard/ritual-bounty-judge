@@ -19,7 +19,7 @@ export function JudgingOverlay({ count, tee }: { count: number; tee?: boolean })
         </div>
         <p className="mb-5 text-[13px] leading-[1.55] text-text2">
           All {count} unsealed answer{count === 1 ? "" : "s"} go to the model in{" "}
-          <b className="text-ink">one request</b> — never one call per answer — so they’re ranked
+          <b className="text-ink">one request</b> (never one call per answer), so they’re ranked
           against each other on the same rubric.
         </p>
         {tee ? (
@@ -29,7 +29,7 @@ export function JudgingOverlay({ count, tee }: { count: number; tee?: boolean })
               <path d="M8 10V7a4 4 0 0 1 8 0v3" />
             </svg>
             <span className="text-[12px] text-indigo-soft">
-              Decrypted and judged inside the TEE — plaintext never touches the public chain.
+              Decrypted and judged inside the TEE, so plaintext never touches the public chain.
             </span>
           </div>
         ) : null}

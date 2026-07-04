@@ -213,7 +213,7 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
               <FactRow label="Escrow" value={
                 contractAddress ? (
                   <CopyText value={contractAddress} display={shortenAddress(contractAddress, 6)} className="text-[12.5px]" />
-                ) : "—"
+                ) : "not set"
               } />
               <FactRow label="Locked" value={<span className="font-semibold text-green">{formatReward(bounty.reward)}</span>} />
               <FactRow label="Network" value={<span className="font-mono">{ritualChain.name}</span>} />

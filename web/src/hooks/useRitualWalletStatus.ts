@@ -16,7 +16,7 @@ type Result = Partial<RitualWalletStatus> & {
 /**
  * Live RitualWallet funding status for `user` (the *connected* wallet, not the
  * bounty contract). Built on wagmi reads + the live block number so render stays
- * pure — no `setState` in effects. Reads are disabled until a user is present.
+ * pure, with no `setState` in effects. Reads are disabled until a user is present.
  */
 export function useRitualWalletStatus(user?: `0x${string}`): Result {
   const enabled = Boolean(user);

@@ -49,7 +49,7 @@ function describeError(err: unknown): string {
  * idle → wallet → pending → confirmed | failed.
  *
  * `run(params)` returns the tx hash (or throws). `onConfirmed(receipt)` fires
- * once when the receipt lands — handy for refetching reads or reading logs.
+ * once when the receipt lands, handy for refetching reads or reading logs.
  */
 export function useWriteTx(onConfirmed?: (receipt: TransactionReceipt) => void) {
   const {

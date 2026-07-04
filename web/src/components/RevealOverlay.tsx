@@ -71,7 +71,7 @@ export function RevealOverlay({
               onClick={onDone}
               className="mt-5 w-full rounded-full bg-green py-3.5 text-[14px] font-semibold text-on-accent shadow-[0_0_28px_rgba(53,208,127,0.3)]"
             >
-              Done — your answer is public →
+              Done. Your answer is public →
             </button>
           </div>
         )}

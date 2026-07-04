@@ -118,7 +118,7 @@ export function FinalizeWinner({
               <div className="text-[22px] font-semibold">Choose the winner</div>
               <div className="mt-1.5 text-[13px] leading-[1.5] text-text2">
                 {recommended !== undefined ? (
-                  <>The AI recommends entry #{recommended}. You can accept it or override — the
+                  <>The AI recommends entry #{recommended}. You can accept it or override. The
                   contract pays whoever you finalize.</>
                 ) : (
                   <>The contract pays whoever you finalize.</>
@@ -164,7 +164,7 @@ export function FinalizeWinner({
             </div>
             {overriding ? (
               <div className="mx-6 mt-1.5 rounded-[10px] border border-amber/40 bg-amber-tint px-3.5 py-2.5 text-[12px] leading-[1.45] text-amber-text2">
-                You’re overriding the AI’s recommendation. That’s allowed — just make sure it fits
+                You’re overriding the AI’s recommendation. That’s allowed, just make sure it fits
                 your rubric.
               </div>
             ) : null}

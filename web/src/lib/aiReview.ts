@@ -37,7 +37,7 @@ export function decodeAiReview(aiReviewHex?: string): DecodedAiReview | null {
   try {
     raw = hexToString(aiReviewHex as `0x${string}`);
   } catch {
-    // Not valid UTF-8 bytes — surface the hex itself.
+    // Not valid UTF-8 bytes, so surface the hex itself.
     raw = aiReviewHex;
   }
 
