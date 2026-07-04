@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import Link from "next/link";
-import { useAccount } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { useBounty } from "@/hooks/useBounty";
 import { useNow } from "@/hooks/useNow";
 import {
@@ -49,7 +49,23 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
   const { address } = useAccount();
   const now = useNow();
   const { bounty, isLoading, isError, error, refetch } = useBounty(bountyId);
-  const reload = useCallback(() => void refetch(), [refetch]);
+  // Revealed count drives judge-vs-reclaim: only revealed answers can be judged,
+  // and reclaim is only valid when nothing was revealed. submissionCount is not
+  // enough because a commit without a reveal counts toward it but not toward this.
+  const { data: revealedCountRaw, refetch: refetchRevealed } = useReadContract({
+    address: contractAddress,
+    abi: sealedVerdictAbi,
+    functionName: "revealedCount",
+    args: [bountyId],
+    chainId: ritualChain.id,
+    query: { enabled: !!contractAddress },
+  });
+  const revealedCount =
+    revealedCountRaw !== undefined ? Number(revealedCountRaw) : undefined;
+  const reload = useCallback(() => {
+    void refetch();
+    void refetchRevealed();
+  }, [refetch, refetchRevealed]);
 
   // A non-existent bounty reverts getBounty (bountyExists modifier). Treat that,
   // and an all-zero owner, as the designed "not found" state.
@@ -183,7 +199,7 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
         <div className="flex flex-col gap-[26px]">
           {bounty.finalized ? <SettledBanner bounty={bounty} winner={Number(bounty.winnerIndex)} /> : null}
           <CommitReveal bountyId={bountyId} bounty={bounty} onSubmitted={reload} />
-          <JudgeAll bountyId={bountyId} bounty={bounty} isOwner={isOwner} onJudged={reload} />
+          <JudgeAll bountyId={bountyId} bounty={bounty} isOwner={isOwner} revealedCount={revealedCount} onJudged={reload} />
           {bounty.judged ? <AIReviewDisplay aiReview={bounty.aiReview} /> : null}
           <FinalizeWinner bountyId={bountyId} bounty={bounty} isOwner={isOwner} onFinalized={reload} />
           <SubmissionsList
@@ -223,7 +239,7 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
             </div>
           </div>
 
-          {isOwner ? <OwnerControls bountyId={bountyId} bounty={bounty} status={status} now={now} onDone={reload} /> : null}
+          {isOwner ? <OwnerControls bountyId={bountyId} bounty={bounty} status={status} now={now} revealedCount={revealedCount} onDone={reload} /> : null}
         </div>
       </div>
     </>
@@ -271,17 +287,21 @@ function OwnerControls({
   bounty,
   status,
   now,
+  revealedCount,
   onDone,
 }: {
   bountyId: bigint;
   bounty: Bounty;
   status: BountyStatus;
   now: number;
+  revealedCount: number | undefined;
   onDone: () => void;
 }) {
   const tx = useWriteTx(() => onDone());
   const revealOver = now / 1000 >= Number(revealDeadline(bounty));
-  const canReclaim = revealOver && !bounty.finalized;
+  // Reclaim is only valid when nobody revealed. Matches reclaimReward's
+  // require(revealedCount == 0), so the button never offers a reverting tx.
+  const canReclaim = revealOver && !bounty.finalized && revealedCount === 0;
 
   async function reclaim() {
     if (!contractAddress) return;

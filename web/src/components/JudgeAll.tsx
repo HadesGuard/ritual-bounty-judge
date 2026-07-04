@@ -20,11 +20,13 @@ export function JudgeAll({
   bountyId,
   bounty,
   isOwner,
+  revealedCount,
   onJudged,
 }: {
   bountyId: bigint;
   bounty: Bounty;
   isOwner: boolean;
+  revealedCount: number | undefined;
   onJudged: () => void;
 }) {
   const { address } = useAccount();
@@ -35,7 +37,9 @@ export function JudgeAll({
   const walletStatus = useRitualWalletStatus(address);
 
   const now = useNow();
-  const count = Number(bounty.submissionCount);
+  // Only revealed answers are judged, so gate and count on that, not on the
+  // total submission count (a commit without a reveal must not unlock judging).
+  const count = revealedCount ?? 0;
   const revealOver = now / 1000 >= Number(revealDeadline(bounty));
 
   if (bounty.judged || bounty.finalized || count === 0 || !revealOver) return null;
