@@ -17,6 +17,7 @@ import {
 } from "@/lib/commitment";
 import { useWriteTx } from "@/hooks/useWriteTx";
 import { TxStatus } from "@/components/ui";
+import { RevealOverlay } from "@/components/RevealOverlay";
 import { shortenAddress } from "@/lib/format";
 
 const explorerBase = ritualChain.blockExplorers?.default.url;
@@ -215,9 +216,9 @@ function RevealCard({
   );
   const [answer, setAnswer] = useState(restored?.answer ?? "");
   const [salt, setSalt] = useState<string>(restored?.salt ?? "");
+  const [overlayDone, setOverlayDone] = useState(false);
   const tx = useWriteTx(() => {
     if (contractAddress && address) clearCommitment(contractAddress, bountyId, address);
-    onSubmitted();
   });
 
   const saltValid = /^0x[0-9a-fA-F]{64}$/.test(salt);
@@ -254,6 +255,16 @@ function RevealCard({
           </div>
         </div>
       </div>
+
+      {done && !overlayDone ? (
+        <RevealOverlay
+          answer={answer}
+          onDone={() => {
+            setOverlayDone(true);
+            onSubmitted();
+          }}
+        />
+      ) : null}
 
       {done ? (
         <div className="flex items-center gap-3.5 bg-green-tint px-[26px] py-6">
