@@ -11,6 +11,7 @@ import { buildJudgeAllLlmInput, type JudgeSubmission } from "@/lib/ritualLlm";
 import { useWriteTx } from "@/hooks/useWriteTx";
 import { useRitualWalletStatus } from "@/hooks/useRitualWalletStatus";
 import { RitualWalletPanel } from "@/components/RitualWalletPanel";
+import { JudgingOverlay } from "@/components/JudgingOverlay";
 import { TxStatus, Spinner } from "@/components/ui";
 
 const explorerBase = ritualChain.blockExplorers?.default.url;
@@ -131,6 +132,9 @@ export function JudgeAll({
       )}
       {gatherError && <div className="mt-3 text-[12.5px] text-red-soft">{gatherError}</div>}
       <TxStatus state={tx.state} error={tx.error} hash={tx.hash} explorerBase={explorerBase} />
+      {busy && (tx.state === "pending" || tx.state === "wallet" || gathering) ? (
+        <JudgingOverlay count={count} />
+      ) : null}
     </div>
   );
 }

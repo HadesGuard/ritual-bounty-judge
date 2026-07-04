@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/SiteHeader";
+import { WrongNetworkBanner } from "@/components/WrongNetworkBanner";
 
 export default function AppLayout({
   children,
@@ -6,6 +7,7 @@ export default function AppLayout({
   return (
     <div className="relative z-10">
       <SiteHeader />
+      <WrongNetworkBanner />
       {children}
     </div>
   );

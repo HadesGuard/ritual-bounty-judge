@@ -21,6 +21,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const onCreate = pathname?.startsWith("/create");
   const onMe = pathname?.startsWith("/me");
+  const onBoard = pathname?.startsWith("/leaderboard");
 
   const navItem = (active: boolean) =>
     active
@@ -36,11 +37,14 @@ export function SiteHeader() {
         </Link>
 
         <div className="flex items-center gap-1">
-          <Link href="/" className={navItem(!onCreate && !onMe)}>
+          <Link href="/" className={navItem(!onCreate && !onMe && !onBoard)}>
             Bounties
           </Link>
           <Link href="/create" className={navItem(!!onCreate)}>
-            Post a bounty
+            Post
+          </Link>
+          <Link href="/leaderboard" className={navItem(!!onBoard)}>
+            Leaderboard
           </Link>
           <Link href="/me" className={navItem(!!onMe)}>
             Activity
