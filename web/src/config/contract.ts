@@ -32,10 +32,18 @@ export const hiddenContractAddress: Address =
     ? (rawHiddenAddress as Address)
     : "0x5DCEBc52D5014F1d11352A8639178457C9e7d397";
 
-/** Ritual LLM executor / callback address used when encoding `judgeAll` input. */
+/**
+ * Ritual LLM executor address used when encoding `judgeAll` input. This is a
+ * registered TEE executor's address (from the network's executor registry),
+ * not the LLM precompile's own address -- the previous default pointed at
+ * the precompile itself (0x...0802), which two decoded real on-chain calls
+ * confirm is wrong: both used a genuine registered executor in this field.
+ * Rotate this if the executor goes offline; check the current registry via
+ * the explorer's executor list.
+ */
 export const executorAddress: Address =
   (process.env.NEXT_PUBLIC_RITUAL_EXECUTOR_ADDRESS?.trim() as Address | undefined) ??
-  "0x0000000000000000000000000000000000000802";
+  "0xb42e435c4252a5a2e7440e37b609f00c61a0c91b";
 
 export const ritualChainId = Number(
   process.env.NEXT_PUBLIC_RITUAL_CHAIN_ID ?? "1979",

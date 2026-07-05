@@ -5,14 +5,22 @@ import { RITUAL_WALLET, ritualWalletAbi } from "@/abi/RitualWallet";
  * Funding requirements for running an AI judging (`judgeAll`) transaction.
  * These mirror what the LLM precompile expects: enough RITUAL deposited, and
  * a lock that outlives the async callback by a comfortable buffer.
+ *
+ * The precompile's required balance scales with prompt length (title +
+ * rubric + all revealed answers), not with `maxCompletionTokens` -- measured
+ * live on Ritual chain: a one-line test prompt required ~0.05 RITUAL, while a
+ * realistic bounty-sized prompt (short title/rubric/single short answer)
+ * required ~0.311 RITUAL and reverted below that. Bigger bounties (longer
+ * rubric, several long answers) will need more than this default covers;
+ * there's no known way to query the exact required amount ahead of time.
  */
-export const MIN_LLM_BALANCE = parseEther("0.05");
+export const MIN_LLM_BALANCE = parseEther("0.5");
 /** How long (in blocks) the "Deposit LLM Fees" action locks funds for. */
 export const LOCK_DURATION = 100_000n;
 /** Lock must extend at least this many blocks past the current block. */
 export const REQUIRED_TTL_BUFFER = 300n;
 /** Amount sent with a single deposit. */
-export const DEPOSIT_AMOUNT = parseEther("0.05");
+export const DEPOSIT_AMOUNT = parseEther("0.5");
 
 export type RitualWalletStatus = {
   balance: bigint;

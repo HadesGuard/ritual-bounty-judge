@@ -74,6 +74,15 @@ export function JudgeAll({
         functionName: "judgeAll",
         args: [bountyId, llmInput],
         chainId: ritualChain.id,
+        // Automatic gas estimation against this async precompile call is
+        // unreliable: measured live, an underfunded/oversized request either
+        // throws an opaque "execution reverted" during estimation, or -- even
+        // more confusingly -- gets accepted (returns a hash) and then never
+        // lands in a block or stays pending, with no error at all. A fixed
+        // gas limit skips estimation and lets the real broadcast surface the
+        // actual RPC-level error (e.g. the real "insufficient wallet balance"
+        // message) instead.
+        gas: 2_000_000n,
       });
     } catch (e) {
       setGathering(false);
