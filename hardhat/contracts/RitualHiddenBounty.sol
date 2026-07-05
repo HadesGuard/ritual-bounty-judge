@@ -43,6 +43,16 @@ contract RitualHiddenBounty {
     mapping(uint256 => EncryptedSubmission[]) public submissions;
     mapping(uint256 => mapping(address => bool)) public hasSubmitted;
 
+    /// @dev Ritual chain (id 1979) reports `block.timestamp` in milliseconds,
+    ///      not the standard Unix seconds every other chain (including local
+    ///      test networks) uses. Deadlines are stored and compared in seconds,
+    ///      so normalize here rather than at every call site.
+    uint256 private constant RITUAL_CHAIN_ID = 1979;
+
+    function _now() private view returns (uint256) {
+        return block.chainid == RITUAL_CHAIN_ID ? block.timestamp / 1000 : block.timestamp;
+    }
+
     // -------------------------------------------------------------------------
     // Events
     // -------------------------------------------------------------------------
@@ -83,7 +93,7 @@ contract RitualHiddenBounty {
         uint256 submissionDeadline
     ) external returns (uint256 bountyId) {
         require(teeSigner != address(0), "tee signer required");
-        require(submissionDeadline > block.timestamp, "deadline must be future");
+        require(submissionDeadline > _now(), "deadline must be future");
 
         bountyId = nextBountyId++;
         Bounty storage b = bounties[bountyId];
@@ -109,7 +119,7 @@ contract RitualHiddenBounty {
     ///         its hash is stored, keeping storage cost flat.
     function submitEncrypted(uint256 bountyId, bytes calldata ciphertext) external {
         Bounty storage b = bounties[bountyId];
-        if (block.timestamp > b.submissionDeadline) revert SubmissionPhaseClosed();
+        if (_now() > b.submissionDeadline) revert SubmissionPhaseClosed();
         if (hasSubmitted[bountyId][msg.sender])     revert AlreadySubmitted();
         if (ciphertext.length == 0)                 revert EmptyCiphertext();
 
@@ -132,7 +142,7 @@ contract RitualHiddenBounty {
     function requestBatchJudging(uint256 bountyId) external {
         Bounty storage b = bounties[bountyId];
         if (msg.sender != b.owner)                    revert NotBountyOwner();
-        if (block.timestamp <= b.submissionDeadline)  revert SubmissionPhaseNotClosed();
+        if (_now() <= b.submissionDeadline)  revert SubmissionPhaseNotClosed();
         if (b.phase != Phase.Open)                    revert AlreadyFinalized();
 
         b.phase = Phase.Judging;

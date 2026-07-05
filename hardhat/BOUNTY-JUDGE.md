@@ -5,11 +5,20 @@ deadline passes; only verified reveals are eligible for Ritual LLM batch judging
 
 ## Deployment (Ritual chain, chainId 1979)
 
-- Contract: `0x712A26E121c12F2e6D576a7CE5A2be21Be939652` (`SealedVerdict`)
-- Deploy tx: `0xb6749b72e181d5f258c7ad2058310ba14faefd6d838187bcf8fd7b2510cf1a30`
-- Deployer: `0xB6F30F2577FC57ec3c46d79438f10EFC85a504a1`
-- Deployed via Hardhat Ignition (`ignition/modules/SealedVerdict.ts`)
-- Earlier deployment (same code, old `AIJudge` name): `0x9eA7235d9D9870c53EA41868C84EAD757ee86e3c`
+- Contract: `0xa209d966d235e4e7130c5af1a7b08f665abfe170` (`SealedVerdict`)
+- Deploy tx: `0xde91720b327e09ab062e1e476119390ebb3065935f397bc4b3ab4c82cd229cad`
+- Deployed directly via a viem script (not Ignition) using a funded test wallet, bypassing the
+  Ignition/keystore path for this redeploy.
+- Superseded deployments (same code except for the fix below):
+  - `0x712A26E121c12F2e6D576a7CE5A2be21Be939652` -- deploy tx
+    `0xb6749b72e181d5f258c7ad2058310ba14faefd6d838187bcf8fd7b2510cf1a30`, deployer
+    `0xB6F30F2577FC57ec3c46d79438f10EFC85a504a1`. **Never actually usable**: Ritual chain reports
+    `block.timestamp` in milliseconds, not standard Unix seconds (confirmed by sampling live
+    blocks), so `deadline > block.timestamp` in `createBounty` could never pass for any real
+    deadline. `nextBountyId` on this contract was still `1` (its initial value) when discovered --
+    no bounty was ever successfully created on it. Fixed by normalizing through a chain-id-gated
+    `_now()` helper (see `contracts/SealedVerdict.sol`); local test networks are unaffected.
+  - `0x9eA7235d9D9870c53EA41868C84EAD757ee86e3c` -- earlier deployment, old `AIJudge` name.
 
 ## Lifecycle
 

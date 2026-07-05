@@ -27,6 +27,16 @@ contract SealedVerdict is PrecompileConsumer {
     uint256 public constant MAX_ANSWER_LENGTH = 2_000;
     uint256 public constant REVEAL_WINDOW = 1 days;
 
+    /// @dev Ritual chain (id 1979) reports `block.timestamp` in milliseconds,
+    ///      not the standard Unix seconds every other chain (including local
+    ///      test networks) uses. Deadlines are stored and compared in seconds,
+    ///      so normalize here rather than at every call site.
+    uint256 private constant RITUAL_CHAIN_ID = 1979;
+
+    function _now() private view returns (uint256) {
+        return block.chainid == RITUAL_CHAIN_ID ? block.timestamp / 1000 : block.timestamp;
+    }
+
     uint256 public nextBountyId = 1;
 
     IRitualWallet wallet =
@@ -109,7 +119,7 @@ contract SealedVerdict is PrecompileConsumer {
         uint256 deadline
     ) external payable returns (uint256 bountyId) {
         require(msg.value > 0, "reward required");
-        require(deadline > block.timestamp, "deadline in past");
+        require(deadline > _now(), "deadline in past");
 
         bountyId = nextBountyId++;
 
@@ -134,7 +144,7 @@ contract SealedVerdict is PrecompileConsumer {
     ) external bountyExists(bountyId) {
         Bounty storage bounty = bounties[bountyId];
 
-        require(block.timestamp < bounty.deadline, "submissions closed");
+        require(_now() < bounty.deadline, "submissions closed");
         require(
             bounty.submissions.length < MAX_SUBMISSIONS,
             "too many submissions"
@@ -172,8 +182,8 @@ contract SealedVerdict is PrecompileConsumer {
     ) external bountyExists(bountyId) {
         Bounty storage bounty = bounties[bountyId];
 
-        require(block.timestamp >= bounty.deadline, "reveal not open");
-        require(block.timestamp < bounty.revealDeadline, "reveal closed");
+        require(_now() >= bounty.deadline, "reveal not open");
+        require(_now() < bounty.revealDeadline, "reveal closed");
         require(bytes(answer).length <= MAX_ANSWER_LENGTH, "answer too long");
 
         uint256 idx1 = submissionIndex[bountyId][msg.sender];
@@ -202,7 +212,7 @@ contract SealedVerdict is PrecompileConsumer {
     ) external bountyExists(bountyId) onlyOwner(bountyId) {
         Bounty storage bounty = bounties[bountyId];
 
-        require(block.timestamp >= bounty.revealDeadline, "reveal not over");
+        require(_now() >= bounty.revealDeadline, "reveal not over");
         require(!bounty.judged, "already judged");
         require(!bounty.finalized, "already finalized");
         require(revealedCount(bountyId) > 0, "no revealed answers");
@@ -261,7 +271,7 @@ contract SealedVerdict is PrecompileConsumer {
     ) external bountyExists(bountyId) onlyOwner(bountyId) {
         Bounty storage bounty = bounties[bountyId];
 
-        require(block.timestamp >= bounty.revealDeadline, "reveal not over");
+        require(_now() >= bounty.revealDeadline, "reveal not over");
         require(!bounty.finalized, "already finalized");
         require(revealedCount(bountyId) == 0, "answers were revealed");
 
