@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useReadContract } from "wagmi";
+import { parseEventLogs } from "viem";
 import sealedVerdictAbi from "@/abi/SealedVerdict";
 import { contractAddress } from "@/config/contract";
 import { ritualChain } from "@/config/wagmi";
@@ -22,7 +23,7 @@ export function FinalizeWinner({
   bountyId: bigint;
   bounty: Bounty;
   isOwner: boolean;
-  onFinalized: () => void;
+  onFinalized: (paidReward?: bigint) => void;
 }) {
   const judge = decodeAiReview(bounty.aiReview)?.parsed ?? null;
   const recommended = judge?.winnerIndex;
@@ -38,7 +39,19 @@ export function FinalizeWinner({
 
   const [open, setOpen] = useState(false);
   const [chosen, setChosen] = useState<number | null>(recommended ?? null);
-  const tx = useWriteTx(() => onFinalized());
+  const tx = useWriteTx((receipt) => {
+    // `finalizeWinner` zeroes `bounty.reward` in storage before paying out, so
+    // by the time we refetch, `getBounty` always reads back 0 -- the only
+    // place the real paid amount survives is this receipt's event.
+    let paidReward: bigint | undefined;
+    try {
+      const logs = parseEventLogs({ abi: sealedVerdictAbi, eventName: "WinnerFinalized", logs: receipt.logs });
+      paidReward = logs[0]?.args?.reward;
+    } catch {
+      /* ignore, banner falls back to bounty.reward */
+    }
+    onFinalized(paidReward);
+  });
 
   if (!isOwner || !bounty.judged || bounty.finalized) return null;
 

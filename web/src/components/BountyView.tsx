@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { useAccount, useReadContract } from "wagmi";
 import { useBounty } from "@/hooks/useBounty";
@@ -49,6 +49,11 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
   const { address } = useAccount();
   const now = useNow();
   const { bounty, isLoading, isError, error, refetch } = useBounty(bountyId);
+  // finalizeWinner zeroes bounty.reward on-chain before paying out, so a
+  // refetch after finalizing always reads back 0. Capture the real paid
+  // amount from the confirming tx's own event instead (session-local only --
+  // a fresh page load of an already-settled bounty has no way to recover it).
+  const [paidReward, setPaidReward] = useState<bigint | undefined>(undefined);
   // Revealed count drives judge-vs-reclaim: only revealed answers can be judged,
   // and reclaim is only valid when nothing was revealed. submissionCount is not
   // enough because a commit without a reveal counts toward it but not toward this.
@@ -131,13 +136,13 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
 
       {/* MASTHEAD */}
       <div className="grid grid-cols-1 rounded-[14px] border border-line lg:grid-cols-[1.55fr_1fr]">
-        <div className="border-r-[1.5px] border-line px-9 py-[34px]">
+        <div className="border-line px-5 py-6 sm:px-9 sm:py-[34px] lg:border-r-[1.5px]">
           <div className="mb-4 flex flex-wrap items-center gap-2.5">
             <span className={`px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.12em] ${badge.cls}`}>
               ● {badge.label}
             </span>
           </div>
-          <h1 className="m-0 mb-5 max-w-[20ch] text-[40px] font-medium leading-[1.08] tracking-[-0.015em]">
+          <h1 className="m-0 mb-5 max-w-[20ch] text-[28px] font-medium leading-[1.12] tracking-[-0.015em] sm:text-[40px] sm:leading-[1.08]">
             {bounty.title || "Untitled bounty"}
           </h1>
           <div className="flex flex-wrap items-center gap-[22px]">
@@ -197,16 +202,38 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
       <div className="mt-[30px] grid grid-cols-1 items-start gap-[26px] lg:grid-cols-[1.55fr_1fr]">
         {/* MAIN */}
         <div className="flex flex-col gap-[26px]">
-          {bounty.finalized ? <SettledBanner bounty={bounty} winner={Number(bounty.winnerIndex)} /> : null}
+          {/* reclaimReward sets `finalized` but leaves `winnerIndex` at its
+              sentinel (uint256 max) -- nobody won, so this must not render as
+              a paid-winner banner. Wait for revealedCount before choosing
+              which banner, rather than guessing "won" while it loads. */}
+          {bounty.finalized && revealedCount !== undefined ? (
+            revealedCount === 0 ? (
+              <ReclaimedBanner reward={paidReward ?? bounty.reward} />
+            ) : (
+              <SettledBanner reward={paidReward ?? bounty.reward} winner={Number(bounty.winnerIndex)} />
+            )
+          ) : null}
           <CommitReveal bountyId={bountyId} bounty={bounty} onSubmitted={reload} />
           <JudgeAll bountyId={bountyId} bounty={bounty} isOwner={isOwner} revealedCount={revealedCount} onJudged={reload} />
           {bounty.judged ? <AIReviewDisplay aiReview={bounty.aiReview} /> : null}
-          <FinalizeWinner bountyId={bountyId} bounty={bounty} isOwner={isOwner} onFinalized={reload} />
+          <FinalizeWinner
+            bountyId={bountyId}
+            bounty={bounty}
+            isOwner={isOwner}
+            onFinalized={(reward) => {
+              setPaidReward(reward);
+              reload();
+            }}
+          />
           <SubmissionsList
             bountyId={bountyId}
             count={Number(bounty.submissionCount)}
             judge={judge}
-            finalWinner={bounty.finalized ? Number(bounty.winnerIndex) : undefined}
+            finalWinner={
+              bounty.finalized && revealedCount !== undefined && revealedCount !== 0
+                ? Number(bounty.winnerIndex)
+                : undefined
+            }
           />
         </div>
 
@@ -239,7 +266,19 @@ export function BountyView({ bountyId }: { bountyId: bigint }) {
             </div>
           </div>
 
-          {isOwner ? <OwnerControls bountyId={bountyId} bounty={bounty} status={status} now={now} revealedCount={revealedCount} onDone={reload} /> : null}
+          {isOwner ? (
+            <OwnerControls
+              bountyId={bountyId}
+              bounty={bounty}
+              status={status}
+              now={now}
+              revealedCount={revealedCount}
+              onDone={(amount) => {
+                setPaidReward(amount);
+                reload();
+              }}
+            />
+          ) : null}
         </div>
       </div>
     </>
@@ -255,7 +294,7 @@ function FactRow({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-function SettledBanner({ bounty, winner }: { bounty: Bounty; winner: number }) {
+function SettledBanner({ reward, winner }: { reward: bigint; winner: number }) {
   return (
     <div className="overflow-hidden rounded-[12px] border border-green-deep bg-green-tint">
       <div className="flex items-center justify-between bg-green px-6 py-3.5 text-green-tint">
@@ -275,7 +314,34 @@ function SettledBanner({ bounty, winner }: { bounty: Bounty; winner: number }) {
         </div>
         <div className="text-right">
           <div className="font-mono text-[10px] text-green">Payout</div>
-          <div className="font-mono text-[34px] font-semibold text-green-deep">{formatReward(bounty.reward)}</div>
+          <div className="font-mono text-[34px] font-semibold text-green-deep">{formatReward(reward)}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReclaimedBanner({ reward }: { reward: bigint }) {
+  return (
+    <div className="overflow-hidden rounded-[12px] border border-line bg-panel">
+      <div className="flex items-center justify-between bg-panel-line px-6 py-3.5 text-on-panel-soft">
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em]">● Settled · reclaimed, nobody revealed</span>
+      </div>
+      <div className="flex items-center gap-[22px] px-6 py-[26px]">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-panel-line text-on-panel-soft">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M3 12a9 9 0 1 0 9-9M3 12l3-3M3 12l3 3" />
+          </svg>
+        </div>
+        <div className="flex-1 text-on-panel-soft">
+          <div className="mb-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
+            No valid reveals
+          </div>
+          <div className="text-[18px] font-medium">Prize returned to the organizer.</div>
+        </div>
+        <div className="text-right text-on-panel-soft">
+          <div className="font-mono text-[10px] text-muted">Refunded</div>
+          <div className="font-mono text-[28px] font-semibold">{formatReward(reward)}</div>
         </div>
       </div>
     </div>
@@ -295,9 +361,12 @@ function OwnerControls({
   status: BountyStatus;
   now: number;
   revealedCount: number | undefined;
-  onDone: () => void;
+  onDone: (refundedReward?: bigint) => void;
 }) {
-  const tx = useWriteTx(() => onDone());
+  // reclaimReward zeroes bounty.reward on-chain and emits no event, so the
+  // only place the real refund amount is still available is this render's
+  // own (pre-tx) `bounty` snapshot -- capture it before the refetch clobbers it.
+  const tx = useWriteTx(() => onDone(bounty.reward));
   const revealOver = now / 1000 >= Number(revealDeadline(bounty));
   // Reclaim is only valid when nobody revealed. Matches reclaimReward's
   // require(revealedCount == 0), so the button never offers a reverting tx.
